@@ -1,0 +1,128 @@
+/* h3 code {
+  @apply !text-lg md:!text-xl;
+}
+
+pre {
+  @apply !px-0 rounded-lg;
+}
+
+code {
+  @apply text-sm md:text-base !leading-loose;
+}
+
+pre > code {
+  counter-reset: line;
+}
+
+code[data-theme*=' '],
+code[data-theme*=' '] span {
+  color: var(--shiki-light);
+  background-color: var(--shiki-light-bg);
+}
+
+@media (prefers-color-scheme: dark) {
+  code[data-theme*=' '],
+  code[data-theme*=' '] span {
+    color: var(--shiki-dark);
+    background-color: var(--shiki-dark-bg);
+  }
+}
+
+code[data-line-numbers] {
+  counter-reset: line;
+}
+
+code[data-line-numbers] > [data-line]::before {
+  counter-increment: line;
+  content: counter(line);
+  @apply inline-block w-4 mr-4 text-right text-gray-500;
+}
+
+
+[data-highlighted-line] {
+  background: rgba(200, 200, 255, 0.1);
+  @apply border-l-blue-400;
+}
+
+[data-highlighted-chars] {
+  @apply bg-zinc-600/50 rounded;
+  box-shadow: 0 0 0 4px rgb(82 82 91 / 0.5);
+}
+
+[data-chars-id] {
+  @apply shadow-none p-1 border-b-2;
+}
+
+[data-chars-id] span {
+  @apply !text-inherit;
+}
+
+[data-chars-id='v'] {
+  @apply !text-pink-300 bg-rose-800/50 border-b-pink-600 font-bold;
+}
+
+[data-chars-id='s'] {
+  @apply !text-yellow-300 bg-yellow-800/50 border-b-yellow-600 font-bold;
+}
+
+[data-chars-id='i'] {
+  @apply !text-purple-200 bg-purple-800/50 border-b-purple-600 font-bold;
+}
+
+  pre [data-line] {
+    @apply px-6 border-l-2 border-l-transparent;
+  }
+
+*/
+
+
+.prose {
+    @apply max-w-[55rem] !leading-8;
+
+    figure {
+        @apply !leading-none
+    }
+  }
+
+pre {
+    @apply rounded-lg;
+}
+
+*[data-rehype-pretty-code-title] {
+    @apply rounded-t-lg bg-zinc-700 text-zinc-200 py-2 px-3 font-semibold text-sm;
+}
+
+*[data-rehype-pretty-code-caption] {
+    @apply italic text-center text-primary-500;
+}
+
+*[data-rehype-pretty-code-title] + pre {
+    @apply !rounded-t-none;
+}
+
+/* Table format */
+table {
+    @apply w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400;
+
+    thead {
+        @apply text-xs uppercase bg-zinc-700 text-zinc-200;
+    
+        tr > th {
+            @apply px-6 py-3;
+        }
+    }
+    
+    tbody {
+        tr {
+            @apply bg-gray-900 dark:bg-gray-800 dark:border-gray-700 border-b border-zinc-700 last-of-type:border-none;
+    
+            th {
+                @apply px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white;
+            }
+    
+            td {
+                @apply px-6 py-4;
+            }
+        }
+    }
+}
