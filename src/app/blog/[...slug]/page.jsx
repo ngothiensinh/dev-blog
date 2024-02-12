@@ -3,7 +3,20 @@ import { notFound } from 'next/navigation';
 import { getPostByPath, getPosts } from '../../../../data/lib/dataLayer';
 import MDXRemoteWrapper from '@/components/CustomMDX/MDXRemoteWrapper';
 
-export default async function BlogDetailPage({ params }) {
+export async function generateStaticParams() {
+  const posts = getPosts();
+
+  return posts.map((post, i) => {
+    return {
+      slug: post.slug.split('/'),
+      post: post,
+      nextPost: i === 0 ? null : posts[i - 1],
+      prevPost: i === posts.length - 1 ? null : posts[i + 1],
+    };
+  });
+}
+
+export default async function Page({ params }) {
   const slug = decodeURI(params.slug.join('/'));
   const posts = getPosts();
 
@@ -19,7 +32,7 @@ export default async function BlogDetailPage({ params }) {
   const authorDetails = [
     {
       name: 'sinhnt',
-      avatar: '/images/avatar.png',
+      avatar: '/images/avatar.jpg',
       twitter: 'https://twitter.com/sinhnt',
     },
   ];
