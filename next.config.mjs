@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: 'export',
+  basePath: "/dev-blog",
   images: { unoptimized: true },
   trailingSlash: true,
   webpack: (config, options) => {

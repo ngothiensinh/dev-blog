@@ -2,7 +2,7 @@ import Comments from '@/components/Comments';
 import Link from '@/components/Link';
 import PageTitle from '@/components/PageTitle';
 import SectionContainer from '@/components/SectionContainer';
-import Image from 'next/image';
+import Image from '../../../components/CustomImage';
 import Tag from '@/components/Tag';
 import siteMetadata from '../../../../data/siteMetadata';
 import ScrollTopAndComment from '@/components/ScrollTopAndComment';
@@ -28,8 +28,6 @@ export default function PostLayout({
   children,
 }) {
   const { filePath, path, slug, date, title, tags } = content;
-  // const basePath = path.split('/')[0];
-  const basePath = slug;
 
   return (
     <SectionContainer>
@@ -165,7 +163,7 @@ export default function PostLayout({
               </div>
               <div className='pt-4 xl:pt-8'>
                 <Link
-                  href={`/${basePath}`}
+                  href={`/${slug}`}
                   className='text-primary-500 hover:text-primary-600 dark:hover:text-primary-400'
                   aria-label='Back to the blog'
                 >
