@@ -26,7 +26,23 @@ export function getPosts() {
 
   allPostsData.sort((a, b) => (a.date < b.date ? 1 : -1));
 
-  return allPostsData;
+  // calculate tag counts in all allPostsData list, each post have a tags array that contains list of tag
+  const tagCounts = allPostsData.reduce((tags, post) => {
+    post.tags.forEach((tag) => {
+      if (tags[tag]) {
+        tags[tag] += 1;
+      } else {
+        tags[tag] = 1;
+      }
+    });
+    return tags;
+  }, {});
+
+  return {
+    items: allPostsData,
+    count: allPostsData.length,
+    tagCounts,
+  };
 }
 
 export async function getPostByPath(id) {

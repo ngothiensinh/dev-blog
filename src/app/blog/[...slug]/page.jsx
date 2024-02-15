@@ -4,7 +4,7 @@ import { getPostByPath, getPosts } from '../../../../data/lib/dataLayer';
 import MDXRemoteWrapper from '@/components/CustomMDX/MDXRemoteWrapper';
 
 export async function generateStaticParams() {
-  const posts = getPosts();
+  const posts = getPosts().items;
 
   return posts.map((post, i) => {
     return {
@@ -18,7 +18,7 @@ export async function generateStaticParams() {
 
 export default async function Page({ params }) {
   const slug = decodeURI(params.slug.join('/'));
-  const posts = getPosts();
+  const posts = getPosts().items;
 
   const postIndex = posts.findIndex((p) => p.slug === slug);
   if (postIndex === -1) {

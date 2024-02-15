@@ -4,7 +4,7 @@ import PageTitle from '@/components/PageTitle';
 import SectionContainer from '@/components/SectionContainer';
 import Image from 'next/image';
 import Tag from '@/components/Tag';
-import siteMetadata from '../../../../data/siteMetadata';
+import siteMetadata from '@/../data/siteMetadata';
 import ScrollTopAndComment from '@/components/ScrollTopAndComment';
 
 const editUrl = (path) => `${siteMetadata.siteRepo}/blob/main/data/${path}`;
@@ -163,7 +163,7 @@ export default function PostLayout({
               </div>
               <div className='pt-4 xl:pt-8'>
                 <Link
-                  href={`/${slug}`}
+                  href='/blog/pages/1'
                   className='text-primary-500 hover:text-primary-600 dark:hover:text-primary-400'
                   aria-label='Back to the blog'
                 >

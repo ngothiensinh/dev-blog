@@ -8,7 +8,7 @@ import { getPosts } from '../../data/lib/dataLayer';
 const MAX_DISPLAY = 5;
 
 export default function Home() {
-  const posts = getPosts();
+  const posts = getPosts().items;
 
   return (
     <>

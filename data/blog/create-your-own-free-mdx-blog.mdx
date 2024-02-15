@@ -3,7 +3,7 @@ title: Create your own free MDX blog
 date: '2024-02-15T16:32:14Z'
 tags: ['markdown', 'mdx', 'nextjs']
 draft: false
-summary: A detail journey of how to build this blog
+summary: A step by step tutorial of building a static MDX blog host on Github
 ---
 
 # What is this?
@@ -33,12 +33,12 @@ summary: A detail journey of how to build this blog
 - Access Github Pages settings and add your custom domain
 - Access the Domain Provider and add the A record CNAME record to point to Github Pages. Double check the Github IP address [here](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site)
 
-| Type  | Name | Value                            |
-| ----- | ---- | -------------------------------- |
-| A     | @    | 185.199.108.153                  |
-| A     | @    | 185.199.109.153                  |
-| A     | @    | 185.199.110.153                  |
-| A     | @    | 185.199.111.153                  |
+| Type  | Name | Value                              |
+| ----- | ---- | ---------------------------------- |
+| A     | @    | 185.199.108.153                    |
+| A     | @    | 185.199.109.153                    |
+| A     | @    | 185.199.110.153                    |
+| A     | @    | 185.199.111.153                    |
 | CNAME | www  | `<your-github-username>.github.io` |
 
 - Wait for a few minutes and your blog is now live at `https://<your-custom-domain>`
@@ -53,6 +53,6 @@ summary: A detail journey of how to build this blog
 
 ## 2. Your images are not loading
 
-| Solution                                 | With custom domain                           | Without custom domain                                          |
-| ---------------------------------------- | -------------------------------------------- | -------------------------------------------------------------- |
+| Solution                                 | With custom domain                             | Without custom domain                                            |
+| ---------------------------------------- | ---------------------------------------------- | ---------------------------------------------------------------- |
 | The `src` property of `<Image src="" />` | `/images/<your-image-in-public/images-folder>` | `/<repository-name>/images/<your-image-in-public/images-folder>` |
