@@ -4,7 +4,7 @@ import MobileNav from './MobileNav';
 import ThemeSwitch from '../ThemeSwitch';
 import SearchButton from '../SearchButton';
 import headerNavLinks from './navLink';
-import Image from '../CustomImage';
+import Image from 'next/image';
 
 const Header = () => {
   return (
@@ -14,7 +14,7 @@ const Header = () => {
           <div className='flex items-center justify-between'>
             <div className='mr-3'>
               <Image
-                src='images/avatar.jpg'
+                src='/images/avatar.jpg'
                 width={100}
                 height={100}
                 alt='avatar'

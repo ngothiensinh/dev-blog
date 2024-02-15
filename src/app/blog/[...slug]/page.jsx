@@ -32,7 +32,7 @@ export default async function Page({ params }) {
   const authorDetails = [
     {
       name: 'sinhnt',
-      avatar: 'images/avatar.jpg',
+      avatar: '/images/avatar.jpg',
       twitter: 'https://twitter.com/sinhnt',
     },
   ];
