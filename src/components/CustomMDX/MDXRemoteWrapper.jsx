@@ -29,6 +29,10 @@ const components = {
 
 export default function MDXRemoteWrapper({ mdxContent }) {
   return (
-    <MDXRemote source={mdxContent} options={options} components={components} />
+    <MDXRemote
+      source={mdxContent}
+      options={options}
+      components={components}
+    />
   );
 }

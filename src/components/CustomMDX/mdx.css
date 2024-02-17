@@ -75,54 +75,64 @@ code[data-line-numbers] > [data-line]::before {
 
 */
 
-
 .prose {
-    @apply max-w-[55rem] !leading-8;
+  @apply max-w-[55rem] !leading-8;
+}
 
-    figure {
-        @apply !leading-none
-    }
-  }
+.prose > figure {
+  @apply !leading-none
+}
 
 pre {
-    @apply rounded-lg;
+  @apply rounded-lg;
 }
 
 *[data-rehype-pretty-code-title] {
-    @apply rounded-t-lg bg-zinc-700 text-zinc-200 py-2 px-3 font-semibold text-sm;
+  @apply rounded-t-lg bg-zinc-700 text-zinc-200 py-2 px-3 font-semibold text-sm;
 }
 
 *[data-rehype-pretty-code-caption] {
-    @apply italic text-center text-primary-500;
+  @apply italic text-center text-primary-500;
 }
 
 *[data-rehype-pretty-code-title] + pre {
-    @apply !rounded-t-none;
+  @apply !rounded-t-none;
 }
 
 /* Table format */
 table {
-    @apply w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400;
+  @apply w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400;
+}
 
-    thead {
-        @apply text-xs uppercase bg-zinc-700 text-zinc-200;
-    
-        tr > th {
-            @apply px-6 py-3;
-        }
-    }
-    
-    tbody {
-        tr {
-            @apply bg-gray-900 dark:bg-gray-800 dark:border-gray-700 border-b border-zinc-700 last-of-type:border-none;
-    
-            th {
-                @apply px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white;
-            }
-    
-            td {
-                @apply px-6 py-4;
-            }
-        }
-    }
+table > thead {
+  @apply text-xs uppercase bg-zinc-700 text-zinc-200;
+}
+
+table > thead > tr > th {
+  @apply px-6 py-3;
+}
+
+table > tbody > tr {
+  @apply bg-gray-900 dark:bg-gray-800 dark:border-gray-700 border-b border-zinc-700 last-of-type:border-none;
+}
+
+table > tbody > tr > td {
+  @apply px-6 py-4;
+}
+
+/* List format */
+.mdx-container > ul {
+  @apply list-disc list-inside;
+}
+
+.mdx-container ol {
+  @apply list-decimal list-inside;
+}
+
+.mdx-container
+ul ul, 
+ul ol, 
+ol ul, 
+ol ol {
+    @apply ml-5;
 }
