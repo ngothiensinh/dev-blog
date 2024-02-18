@@ -12,7 +12,6 @@ module.exports = {
     extend: {
       colors: {
         primary: colors.pink,
-        gray: colors.gray,
       },
     },
     typography: ({ theme }) => ({

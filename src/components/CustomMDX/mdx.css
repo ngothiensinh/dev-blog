@@ -38,7 +38,6 @@ code[data-line-numbers] > [data-line]::before {
   @apply inline-block w-4 mr-4 text-right text-gray-500;
 }
 
-
 [data-highlighted-line] {
   background: rgba(200, 200, 255, 0.1);
   @apply border-l-blue-400;
@@ -109,7 +108,7 @@ table > thead {
 }
 
 table > thead > tr > th {
-  @apply px-6 py-3;
+  @apply px-4 py-2;
 }
 
 table > tbody > tr {
@@ -117,12 +116,13 @@ table > tbody > tr {
 }
 
 table > tbody > tr > td {
-  @apply px-6 py-4;
+  @apply px-4 py-2;
 }
 
 /* List format */
 .mdx-container > ul {
-  @apply list-disc list-inside;
+  list-style: square;
+  list-style-position: inside;
 }
 
 .mdx-container ol {
@@ -134,5 +134,5 @@ ul ul,
 ul ol, 
 ol ul, 
 ol ol {
-    @apply ml-5;
+  @apply ml-5;
 }
