@@ -6,7 +6,8 @@ const postsDirectory = path.join(process.cwd(), 'data/blog');
 const authorsDirectory = path.join(process.cwd(), 'data/authors');
 
 export function getPosts() {
-  const fileNames = fs.readdirSync(postsDirectory);
+  const fileNames1 = fs.readdirSync(postsDirectory);
+  const fileNames = readMdxFiles(postsDirectory);
 
   const allPostsData = fileNames.map((fileName) => {
     // Read markdown file as string
@@ -56,4 +57,19 @@ export async function getPostByPath(id) {
     content: matterResult.content,
     ...matterResult.data,
   };
+}
+
+function readMdxFiles(dir, files = []) {
+  const fileList = fs.readdirSync(dir);
+  for (const file of fileList) {
+    const name = `${dir}/${file}`;
+    if (fs.statSync(name).isDirectory()) {
+      readMdxFiles(name, files);
+    } else {
+      // only get the absolute path of the file start from data/blog
+      files.push(name.replace(process.cwd(), '').split('blog/')[1]);
+    }
+  }
+
+  return files;
 }

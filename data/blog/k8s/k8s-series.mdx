@@ -1,0 +1,135 @@
+---
+title: k8s learning note
+date: '2024-02-21T15:32:14Z'
+tags: ['k8s']
+draft: false
+summary: K8s learning note such as basic concepts, commands and examples
+---
+
+# Why k8s?
+
+- When deploying the application, you need a Computer and bunch of dependency software to run the application.
+- To eliminate the complicated of installing the dependency software, you use Docker to package the application and its dependencies into a container.
+- But when having a lof of Application running on Docker, especially in a Microservice architecture, there are bunch of management tasks such as scaling, deploy, resouce allocation, communication ... for each of the application. That where the Docker Orchestration comes in, and K8s is one of the most popular.
+
+# Type of K8s
+
+- Run on-premises: On windows you can install K8s using Docker Desktop, on Linux you can use Minikube
+- Run on cloud: Azure(AKS), AWS(EKS), GCP(GKE)
+
+# Interal architecture
+
+The k8s cluster is made up of 1 or more worker nodes and usually 1 master node. Use `kubectl` to interact with the master node, then the master node will interact with the worker node to create, delete, update the application.
+
+- Master Node (Control Plane): Manage the cluster, schedule the application, monitor the application, and manage the worker node.
+
+  - API Server: Frontend for the K8s control plane
+  - Scheduler: Schedule the application to the worker node
+  - Controller Manager: Run the controller
+  - etcd: Store the configuration data
+
+- Worker Node: Run the application
+  - 1 Worker Node can run 1 or more application
+  - 1 Worker Node similar to 1 VM
+
+On cloud, the master node is managed by the cloud provider, the worker node is managed by you.
+Use kubectl
+
+# AKS Network plugin
+
+Define how the pods and nodes comunicate each other and with external resource
+
+- Kubenet: Default (Design for fewer 400 nodes)
+  - You must define the UDRs (User-defined routes). To reach the pods from outside of the cluster, a load balancer must be used
+  - Minor latency
+- Azure CNI: (Number of Node depend on how you configured)
+  - With Azure CNI, pods get full virtual network connectivity and can be directly reached via their private IP address from connected networks.
+  - Latency-sensitive workloads
+- Your custom
+
+=> See this decision making: https://learn.microsoft.com/en-us/training/modules/choose-network-plugin-aks/3-analyze-decision-criteria
+
+# Pod
+
+- Smallest deployable unit in k8s, POD is a wrapper layer around the container and K8s manage the POD instead of the container (example is the pod running, should the pod restart ...)
+- 1 POD = 1 container (but can be more in some special case)
+- A Pod does not expose the container port to the outside world. There are several ways:
+  - kubectl port-forward pod/`<pod-name>` 3000:3000
+  - using #service
+
+```bash
+kubectl get pod
+kubectl get pod --show-labels
+kubectl get pod -l enviroment=value
+kubectl describe pod <pod-name>
+kubectl delete pod <pod-name>
+```
+
+kubectl apply -f hello-kube.yaml
+kubectl delete -f hello-kube.yaml
+
+Use can use kubectl to run a pod instead of declare the pod in yaml file:
+
+- kubectl run hello-redis --image=080196/hello-redis
+
+# ReplicationControllers
+
+- We not use Pod directly, we use ReplicationControllers to manage the PODs. The reason is Pod is helpfull incase Pod get down, but not helpfull incase the entire Node down. Remember POD is inside the worker node while the Controller is in master Node.
+
+- When updating the POD template.yml, you have to delete a pod, then controller will re-create the pod, or you need to delete entire the controller and re-create it.
+
+kubectl get rc
+
+# ReplicaSets
+
+- Newer version of ReplicationControllers and will be used instead of ReplicationControllers
+- RS support more complex selector than RC using matchExpressions (In, NotIn, Exists, DoesNotExist ...)
+
+# DaemonSets
+
+- While RS and RC can have one or more pod running on the same worker node, DaemonSets ensure that there is only ONE pod running on each worker node. (It won't have the Replicate property like RS and RC)
+- A usecase for logging or monitoring, only 1 pod needed on each node
+
+# Services
+
+Service is a single, constant point of a pod or group of pods. It has an immutable IP and Port.
+Remember PODs are ephemeral, can be delete and recreate at any time, so the IP of the PODs are not stable, so we need a service to keep track of the PODs.
+
+There are 4 types of services:
+
+- ClusterIP: Expose the service on a cluster-internal IP. This is the default type. Use for internal communication
+- NodePort: Expose the service on each Node’s IP at a static port (the NodePort). A ClusterIP service, to which the NodePort service will route, is automatically created.
+- LoadBalancer: Expose the service externally using a cloud provider’s load balancer. NodePort and ClusterIP services, to which the external load balancer will route, are automatically created.
+- External Name: Maps the service to the contents of the externalName field (e.g. foo.bar.example.com), by returning a CNAME record with its value. No proxying of any kind is set up.
+
+# Ingress
+
+Allow expose the service to the outside world
+
+# K8s components
+
+## Secret & Config map
+
+- Secret: To store the credentials (convert to base 64/encrypted before save)
+- Config map: To store the application config
+
+# Namspace
+
+> kubectl get ns
+> kubectl create ns `<namespace-name>`
+
+# Commands
+
+```bash
+az aks get-credentials -g azure-rg -n aks-cluster-name
+```
+
+if you have multiple cluster, you can use `--context` to switch between them:
+kubectl config get-contexts
+
+kubectl get pods
+kubectl get pods -o wide -w
+
+# Refs:
+
+- [K8s servies Viblo](https://viblo.asia/p/kubernetes-series-bai-1-kubernetes-la-gi-ORNZqnDql0n)
