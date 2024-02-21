@@ -6,7 +6,7 @@ import clsx from 'clsx';
 export default function Pre({
   children,
   raw,
-  buttonClasses = 'absolute top-3 right-3 bg-zinc-700',
+  buttonClasses = 'absolute top-2 right-2 bg-zinc-700',
   ...props
 }) {
   return (
