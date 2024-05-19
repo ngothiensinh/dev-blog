@@ -67,7 +67,11 @@ function readMdxFiles(dir, files = []) {
       readMdxFiles(name, files);
     } else {
       // only get the absolute path of the file start from data/blog
-      files.push(name.replace(process.cwd(), '').split('blog/')[1]);
+      if (name.endsWith('.mdx')) {
+        files.push(name.replace(process.cwd(), '').split('blog/')[1]);
+      } else {
+        return;
+      }
     }
   }
 

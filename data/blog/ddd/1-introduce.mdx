@@ -1,0 +1,60 @@
+---
+title: What is DDD?
+date: '2024-05-19T15:32:14Z'
+tags: ['DDD']
+draft: true
+summary: What and when to use Domain Driven Design
+---
+
+# What and why DDD?
+DDD (Domain Driven Design) is a aproach to design and build the software.
+DDD is not sliver fit to all kind of project.
+
+A software can have various characteristics, like:
+- Performance
+- Amount of data
+- Biz complexity
+- Tech complexity
+
+DDD is suitable for the project which has Biz complexity and not for the other, for example: The Twitter like app, which requires Performance and Amount of data, but not Biz complexity. So it's not suitable for DDD.
+
+The DDD aims to keep the biz rules at the heart of software.
+- Keep the project complexity under control while it grows.
+- Keep the software maintainable for the long run.
+- Keep adding new feature without breaking the existing feature.
+
+DDD leverage these principles:
+- YAGNI: you are not gonna need it.
+- KISS: keep it simple stupid.
+
+# Main concepts of DDD
+Strategic design concepts:
+- Ubiquitous language: Brige the gap between the biz and tech team.
+- Bounded context: Clear boundary between the different part of the software.
+- Core Domain: Focus on the most important part of the software.
+
+# DDD for everyone
+DDD is not about writing code.
+Comunication between Developers and Domain Expert is the key, and is two way communication.
+- Domain Expert share their mental model and language
+- Developers design the domain model, implement the software using the same language and can contribute back to the domain expert.
+=> Try to be domain expert yourself first.
+
+Why developers need to care much aobut the biz domain, the domain knowledge can get working on work project and hardly repeated when changing their job?
+=> Deep domain knowledge will help to do the best job that a developer could possibly do.
+=> Guide you through the model you design, the code you write and help you look at it from the domain expert's point of view.
+=> Write technically correct code on one hand, and express the domain knowledge on the other hand.
+=> Skill of systematizing the problem domain is resuable.
+And eventually, you get familiar with these patterns and get work on new domain esier.
+
+# DDD Components
+![](/images/ddd-components.png)
+
+# DDD and UT
+- UT coverage vs value distribution, at some point you might found that the value of reaching higher code coverage
+ does not bring much value compare to the effort you invest to it. This number is around 80%.
+
+- Domain model (A, E, VO, DE): 100% UT coverage
+- Repossitory, Application Services, Factories: Not required UT, but IT.
+
+- First, implmenting your model and refine it. Then apply TDD later (Write test first, then implement your model)

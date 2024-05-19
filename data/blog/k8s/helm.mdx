@@ -1,0 +1,135 @@
+---
+title: Helm learning notes
+date: '2024-02-27T15:32:14Z'
+tags: ['k8s', 'helm']
+draft: true
+summary: Deploy k8s application using helm
+---
+
+# Why deploy k8s using Helm
+
+Normal:
+
+- Your app -> hard-code yaml (deployment/service/ingress) -> Kubectl -> AKS
+  => Use Helm to simplify the application deployment process and avoid hardcoded deployment variables and settings.
+  => Repeatable, reliable, manageable, resuable across mutil teams and env
+
+New:
+
+- Your app -> Helm chart -> AKS
+
+Helm components:
+
+- Client: is where helm was installed and responsible for creating and submitting the manifest files required to deploy aks application. (Communicate between user and k8s cluster)
+- Charts: file to describe how the application deployed (chart/value/template)
+- Releases: The application or a group of application deployed using Chart
+- Repositories: discoverability and reusability of helm pacakges
+
+# Concept
+
+If 2 component depends on each other, try to use 1 chart and set the dependency
+If 2 component are independent, create 1 chart for each component (Easier for bugfix and upgrade)
+
+# Commands
+
+```bash title="Create your own chart"
+helm create <name> (Will create chart file template)
+```
+
+# Work with repos
+
+```bash title="Helm repo cli"
+helm repo add azure-marketplace https://marketplace.azurecr.io/helm/v1/repo
+helm repo update
+helm repo list
+helm search repo <?partialname>
+```
+
+# To install a chart (This similar to `kubectl apply` command)
+
+Run `helm install` to install a chart from:
+
+- Chart folder: `helm install <release-name> ./drone-webapp`
+- A packaged `.tgz` tar archive chart: `helm install <release-name> ./drone-webapp.tgz`
+- A Helm repository: `helm install <release-name> azure-marketplace/aspnet-core`
+
+```bash title="Debuging cli"
+helm install --debug --dry-run <release-name> ./drone-webapp
+```
+
+# Lets install aspnet
+
+```bash title="Step to release using helm"
+az aks get-credentials -g learn-helm-deploy-aks-rg -n learn-helm-deploy-aks
+# To release
+helm install <release-name> azure-marketplace/aspnet-core
+# To query all the installed release on the cluster
+helm list
+
+helm get manifest <release-name> (To get manifest file of a release, optional --revision)
+
+helm delete <release-name> (To delete a realease)
+
+# Install with set values
+
+helm install --set replicaCount=5 <release-name> azure-marketplace/aspnet-core
+
+# Upgrade a release
+
+helm upgrade <release-name> ./app-chart (This bassically create new revision)
+
+helm history <release-name>
+
+helm rollback <release-name> <revision-id> (Run helm history to check first)
+```
+
+# Write a custom chart or extends it
+
+## Template and function
+
+To display the value as a string, you use `{{ quote .Values.ingress.enabled }}` or `{{ .Values.ingress.enabled | quote }}`
+Chaning mutiple function: `{{ .Values.ingress.enabled | upper | quote }}`
+Helm chart template support ~60 built-in function
+
+## Conditional
+
+```yml
+{{- if | pipeline | -}}
+  # Do something
+{{- else if | other pipeline | -}}
+  # Do something else
+{{- else -}}
+  # Default case
+{{- end }}
+```
+
+## List
+
+```yml | value.yml
+ingress:
+  enabled: true
+  extraHosts:
+    - name: host1.local
+      path: /
+    - name: host2.local
+      path: /
+    - name: host3.local
+      path: /
+```
+
+```yml | template.yml
+apiVersion: extensions/v1
+kind: Ingress
+metadata:
+spec:
+  rules:
+    ...
+    {{- range .Values.ingress.extraHosts }}
+    - host: {{ .name }}
+      http:
+        paths:
+          - path: {{ .path }}
+            ...
+    {{- end }}
+  ...
+```
