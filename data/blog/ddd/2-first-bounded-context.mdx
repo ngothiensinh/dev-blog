@@ -1,10 +1,13 @@
 ---
 title: Buid first bounded context
 date: '2024-05-19T15:32:14Z'
-tags: ['DDD', 'Tactical']
+tags: ['ddd', 'tactical']
 draft: true
 summary: First bouded context
 ---
+
+# References
+- [Domain-Driven Design in Practice by Vladimir Khorikov](https://app.pluralsight.com/library/courses/domain-driven-design-in-practice)
 
 # Introduce
 Get familiar with Entity and Value Object. Then build a snack machine around these concepts.
@@ -15,31 +18,24 @@ Get familiar with Entity and Value Object. Then build a snack machine around the
 - Bissiness logic/Bissiness rule/domain logic/domain knowledge, and domain model are synonymous.
 
 # Concepts
-- Entity vs Domain: Both are code repensentation of the real world object.
+- Entity vs Value Object: Both are code repensentation of the real world object.
 - Types of equality:
   - Structure equality: Two objects are equal if they have the same value for all property (VO)
   - Identity equality: Two objects are equal if they have the same identity. (E)
 
-In practice, you might see that VO does have identity property
+| Entity (E)                    | Value Object |
+| -------------------------------- | ------------- |
+| Have `Id` property          | Don't have `Id` property  |
+| Identity equality (Compare Id)          | Structure equality (Compare all property)  |
+| Mutable                    | Immutable (Should create a new instance when changing the value)  |
+||Can be treated interchangeably if Structure equality is satisfied|
+||Doesn't have own table in database???|
 
-E:
-- Have identity
-- Mutable
-VO:
-- Don't have identity
-- Can be treated interchangeably if Structure equality is satisfied
-- Immutable (Should create a new instance when changing the value)
-- Doesn't have own table???
 
 How to recognize a Value Object?
 - It more depends on the domain you work on, a concept can be an E in one domain and a VO in another domain.
 - Use the characteristics of VO and E to decide.
-- Prefer VO over E.
-
-Practices:
-- Prefer VO over E
-- Value Objects are light-weight
-- Put most of the logic in VO
+- Prefer VO over E because Value Objects are light-weight, should put most of the logic in VO
 - E act as a wrappers
 - Don't hestitate to update your domain model, example changing from VO to E if it's more suitable.
 
@@ -48,3 +44,30 @@ Build a software for a snack machine, which can:
 - Insert money
 - Return money
 - Buy snack
+
+Here is the UI of snack machine app:
+![](/images/ddd/snack-machine-ui.png)
+
+# Domain model design
+SnackMachine Entity
+- Money Inside : Money VO
+- Money InTransaction : Money VO
+
+Money Value Object
+- int OneCentCount
+- int TenCentCount
+- int OneDolarCount
+- int FiveDolarCount
+- int TwentyDollarCount
+
+# Database Design
+- Confirm with domain expert where which state of the system should be persistence.
+- VO should not have it own table, include VO property in its Entity table columns.
+
+Our Database design:
+- [PK] SnackManchineID
+- [int] OneCentCount
+- [int] TenCentCount
+- [int] OneDolarCount
+- [int] FiveDolarCount
+- [int] TwentyDollarCount
