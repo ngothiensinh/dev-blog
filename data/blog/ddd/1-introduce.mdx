@@ -1,10 +1,13 @@
 ---
 title: What is DDD?
 date: '2024-05-19T15:32:14Z'
-tags: ['DDD']
+tags: ['ddd']
 draft: true
 summary: What and when to use Domain Driven Design
 ---
+
+# References
+- [Domain-Driven Design in Practice by Vladimir Khorikov](https://app.pluralsight.com/library/courses/domain-driven-design-in-practice)
 
 # What and why DDD?
 DDD (Domain Driven Design) is a aproach to design and build the software.
@@ -48,13 +51,11 @@ Why developers need to care much aobut the biz domain, the domain knowledge can 
 And eventually, you get familiar with these patterns and get work on new domain esier.
 
 # DDD Components
-![](/images/ddd-components.png)
+![](/images/ddd/ddd-components.png)
 
 # DDD and UT
 - UT coverage vs value distribution, at some point you might found that the value of reaching higher code coverage
  does not bring much value compare to the effort you invest to it. This number is around 80%.
-
 - Domain model (A, E, VO, DE): 100% UT coverage
 - Repossitory, Application Services, Factories: Not required UT, but IT.
-
-- First, implmenting your model and refine it. Then apply TDD later (Write test first, then implement your model)
+- First, implement your model and refine it. Then apply TDD later (Write test first, then implement your model).

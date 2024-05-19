@@ -1,8 +1,9 @@
 # Run locally
 
 > npm install
+
 > npm run dev
 
-# Fork from:
+# Refs:
 
-- https://tailwind-nextjs-starter-blog.vercel.app/
+- [Fork from](https://tailwind-nextjs-starter-blog.vercel.app/)

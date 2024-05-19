@@ -33,6 +33,23 @@ The k8s cluster is made up of 1 or more worker nodes and usually 1 master node.
 
 On cloud, the master node is managed by the cloud provider, the worker node is managed by you - using `kubectl`.
 
+# Kubectl
+Use `kubectl` to interact with the master node, then the master node will interact with the worker node to create, delete, update the application.
+
+```bash title="Kubectl cli"
+# Connect kubectl
+az aks get-credentials -g azure-rg -n <cluster-name> # Azure
+gcloud container clusters get-credentials <cluster-name> --region <region> # GCP
+# If you have multiple cluster, you can switch between them.
+# Please SURE you working on the right cluster to avoid PROD incidence
+kubectl config get-contexts # View list context
+kubectl config current-context # View current context
+kubectl config use-context <context-name> # Switch context
+kubectl config delete-context <context-name> # Delete context
+```
+
+After connect to cluster, you can use `kubectl` to interact with the cluster
+
 ```bash
 # Check cluster status
 kubectl get componentstatuses
@@ -41,21 +58,6 @@ kubectl cluster-info
 # Flow of deploy app: kubctl apply > api server > event > controller and scheduler listen and create deployment, replicate set, pod
 # To listen all event
 kubectl get events --watch
-```
-
-# Kubectl
-Use `kubectl` to interact with the master node, then the master node will interact with the worker node to create, delete, update the application.
-
-```bash title="Kubectl cli"
-# Connect kubectl to the AKS cluster
-az aks get-credentials -g azure-rg -n aks-cluster-name
-# If you have multiple cluster, you can switch between them
-# View list context
-kubectl config get-contexts
-# View current context (This quite important before start working to avoid unexpected change to real env)
-kubectl config current-context
-# Switch context
-kubectl config use-context <context-name>
 ```
 
 # AKS Network plugin
