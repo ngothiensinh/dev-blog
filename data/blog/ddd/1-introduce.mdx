@@ -9,53 +9,82 @@ summary: What and when to use Domain Driven Design
 # References
 - [Domain-Driven Design in Practice by Vladimir Khorikov](https://app.pluralsight.com/library/courses/domain-driven-design-in-practice)
 
-# What and why DDD?
+# 1. What and why DDD?
 DDD (Domain Driven Design) is a aproach to design and build the software.
-DDD is not sliver fit to all kind of project.
-
-A software can have various characteristics, like:
+DDD is not sliver fit to all kind of project. A software can have various characteristics, like:
 - Performance
 - Amount of data
-- Biz complexity
+- Biz complexity (Suitable for DDD)
 - Tech complexity
 
-DDD is suitable for the project which has Biz complexity and not for the other, for example: The Twitter like app, which requires Performance and Amount of data, but not Biz complexity. So it's not suitable for DDD.
+For example: The Twitter-like app, which requires Performance and large amount of data, but not Biz complexity. So it's not suitable for DDD.
 
 The DDD aims to keep the biz rules at the heart of software.
 - Keep the project complexity under control while it grows.
-- Keep the software maintainable for the long run.
+- Keep the software maintainable for the long run (decades).
 - Keep adding new feature without breaking the existing feature.
 
-DDD leverage these principles:
-- YAGNI: you are not gonna need it.
-- KISS: keep it simple stupid.
+# 2. Concepts before deep dive to DDD
+- Domain/Problem Domain: The actual problem of the software we are going to solve.
+- Bussiness logic/Bussiness rule/domain logic/domain knowledge, and domain model are synonymous.
+- Domain will be composed of multiple parts:
+  1. Core Domain: The most important part of the software.
+  2. Generic Subdomain: A part of a domain, but there is a solution available in the market.
+  3. Supporting Subdomain: A part of the software that is responsible for a specific part of the domain.
 
-# Main concepts of DDD
-Strategic design concepts:
-- Ubiquitous language: Brige the gap between the biz and tech team.
-- Bounded context: Clear boundary between the different part of the software.
-- Core Domain: Focus on the most important part of the software.
+<br/>
 
-# DDD for everyone
-DDD is not about writing code.
-Comunication between Developers and Domain Expert is the key, and is two way communication.
+**Let's take an example of an eCommerce site:**
+- Domain: eCommerce
+- Core Domain: It would be the "Product Recommendation" and "Order Processing System". These are systems that are absolutely crucial for an eCommerce business. They define how the customers get shopping recommendations and how their orders are processed, which directly affects the business growth and customer satisfaction.
+- Supporting Domain: Could be "User Management" and "Inventory". These parts are important to the functioning of the site but do not form the strategic differentiators that give the business its competitive edge.
+- Generic Subdomains: Parts like "Payment Gateway", which do not need to be built in-house as there are already well-established vendors providing suitable solutions. These systems are necessary, but don't provide any unique value to the company.
+
+# 3. DDD
+DDD has two parts: Strategic Design and Tactical Patterns.
+
+| | Strategic Design | Tactical Patterns |
+|--|------------------|-------------------|
+|Who| Domain expert, developers | Developers |
+|Goal| Understand the domain, then design the domain model | Implement the domain model |
+|Outcome| Bounded context, Ubiquitous language, Context map | Entity, Value Object, Aggregate, Repository, Service, Factory |
+
+## 3.1 Strategic design
+Strategic Design is about understanding the domain, then modeling the application around it.
+
+**The input:** 
+- Problem Domain, Domain Expert's knowledge
+
+**The output:**
+- Ubiquitous language: A common language that is shared between the domain expert and the developers. To remove the gap between them.
+- A set of Bounded Contexts, each of which has its own Ubiquitous Language and clear boundary
+- Bounded contex map: These Bounded Contexts are then connected using a Context Map.
+
+**Steps:**
+- Problem domain understanding > Identify the Bounded Context > Create the Context Map
+- The Ubiquitous Language is defined and keep updated.
+- Event Storming is a technique that can be used throughout the entire steps until we got the output.
+- Then Context Mapping pattern helps to show the relationship between the Bounded Contexts.
+
+![](/images/ddd/strategic.png)
+
+### 3.1.1. Event Storming
+TODO
+### 3.1.2. Context mapping patterns
+TODO
+
+## 3.2. Tactical patterns
+Tactical Patterns is about implementing the domain model. TODO
+
+# 4. DDD for EVERYONE
+DDD is not about writing code. Comunication between Developers and Domain Expert is the key, and is two way communication.
 - Domain Expert share their mental model and language
 - Developers design the domain model, implement the software using the same language and can contribute back to the domain expert.
-=> Try to be domain expert yourself first.
+As developer, try to be domain expert yourself first. Try to thinking as a domain expert, then design the domain model.
 
 Why developers need to care much aobut the biz domain, the domain knowledge can get working on work project and hardly repeated when changing their job?
 => Deep domain knowledge will help to do the best job that a developer could possibly do.
 => Guide you through the model you design, the code you write and help you look at it from the domain expert's point of view.
 => Write technically correct code on one hand, and express the domain knowledge on the other hand.
-=> Skill of systematizing the problem domain is resuable.
+=> Skill of systematizing the problem domain is resuable, no matter whhich domain you are working on.
 And eventually, you get familiar with these patterns and get work on new domain esier.
-
-# DDD Components
-![](/images/ddd/ddd-components.png)
-
-# DDD and UT
-- UT coverage vs value distribution, at some point you might found that the value of reaching higher code coverage
- does not bring much value compare to the effort you invest to it. This number is around 80%.
-- Domain model (A, E, VO, DE): 100% UT coverage
-- Repossitory, Application Services, Factories: Not required UT, but IT.
-- First, implement your model and refine it. Then apply TDD later (Write test first, then implement your model).

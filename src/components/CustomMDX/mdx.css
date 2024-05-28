@@ -120,7 +120,7 @@ table > tbody > tr > td {
 }
 
 /* List format */
-.mdx-container > ul {
+.mdx-container ul {
   list-style: square;
   list-style-position: inside;
 }

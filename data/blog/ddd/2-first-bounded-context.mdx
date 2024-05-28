@@ -12,6 +12,16 @@ summary: First bouded context
 # Introduce
 Get familiar with Entity and Value Object. Then build a snack machine around these concepts.
 
+# DDD Components
+![](/images/ddd/ddd-components.png)
+
+# DDD and UT
+- UT coverage vs value distribution, at some point you might found that the value of reaching higher code coverage
+ does not bring much value compare to the effort you invest to it. This number is around 80%.
+- Domain model (A, E, VO, DE): 100% UT coverage
+- Repossitory, Application Services, Factories: Not required UT, but IT.
+- First, implement your model and refine it. Then apply TDD later (Write test first, then implement your model).
+
 # Problem
 - Problem Domain/Domain: the actual problem of the software we are going to solve.
 - Core Domain is the subset of domain: the most important part of the software.
