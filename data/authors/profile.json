@@ -1,0 +1,34 @@
+{
+    "short_desc": "Passionate blogger sharing insights on various topics.",
+    "basic_if": {
+      "name": "Thanh Tung",
+      "email": "ttung@email.com",
+      "location": "Da Nang",
+      "website": "https://yourwebsite.com",
+      "social_media": {
+        "twitter": "https://twitter.com/yourhandle",
+        "linkedin": "https://www.linkedin.com/in/yourprofile",
+        "github": "https://github.com/yourusername"
+      }
+    },
+    "sections": {
+      "work_history": [
+        {
+          "position": "Software Engineer",
+          "company": "ABC Company",
+          "duration": "2018 - Present",
+          "description": "Lead development of innovative projects."
+        },
+        {
+          "position": "Intern",
+          "company": "XYZ Corporation",
+          "duration": "2016 - 2017",
+          "description": "Assisted in various software development tasks."
+        }
+      ],
+      "skills": ["JavaScript", "React", "Node.js", "HTML/CSS", "Python"],
+      "certificates": ["AWS Certified Developer - Associate", "Google Analytics Certification"],
+      "awards": ["Employee of the Month - ABC Company (2019)"]
+    }
+  }
+  
