@@ -14,7 +14,7 @@ const Header = () => {
           <div className='flex items-center justify-between'>
             <div className='mr-3'>
               <Image
-                src='/images/avatar.jpg'
+                src='/dev-blog/images/avatar.jpg'
                 width={100}
                 height={100}
                 alt='avatar'
