@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: 'export',
-  // basePath: "/dev-blog", // no longer needed if using custom domain
+  basePath: '/dev-blog', // no longer needed if using custom domain
   images: { unoptimized: true },
   trailingSlash: true,
   webpack: (config, options) => {
