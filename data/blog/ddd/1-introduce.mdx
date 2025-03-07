@@ -74,7 +74,41 @@ TODO
 TODO
 
 ## 3.2. Tactical patterns
-Tactical Patterns is about implementing the domain model. TODO
+Tactical Patterns is about implementing the domain model.
+
+Application Services:
+- They are responsible for coordinating between the domain model and the external world.
+- They are stateless and should not contain any domain logic.
+- They can call multiple repositories and domain services to achieve their goal.
+
+Building Blocks (Domains):
+- Aggregate
+- Repository:
+  + Repository encapsulates all communication with the external storage.
+  + Single repository per each aggregate
+
+Comunication between Bounded Context
+- In process:
+  + Direct call
+  + Domain event
+  + If there is anti-corruption layer, call via proxy
+- Microservice:
+  + REST/gRPC API
+  + Events via message broker
+
+Type of Bounded Context Physical Isolation
+  + Folders in the assembly
+  + Separate assemblies but in the process
+  + Separate processes
+
+Code Reuse between Bounded Contexts
+- DRY vs Proper boundaries
+- Depends on different type of code:
+  + Biz logic: Shouldn't be reused in most of the case.
+  + Extract to a shared kernel
+- Utility code: 
+  + Reuse within single team
+  + Extract to a shared library and reuse across the teams if have lot of value
 
 # 4. DDD for EVERYONE
 DDD is not about writing code. Comunication between Developers and Domain Expert is the key, and is two way communication.
@@ -82,7 +116,7 @@ DDD is not about writing code. Comunication between Developers and Domain Expert
 - Developers design the domain model, implement the software using the same language and can contribute back to the domain expert.
 As developer, try to be domain expert yourself first. Try to thinking as a domain expert, then design the domain model.
 
-Why developers need to care much aobut the biz domain, the domain knowledge can get working on work project and hardly repeated when changing their job?
+Why developers need to care much about the biz domain, the domain knowledge can get working on work project and hardly repeated when changing their job?
 => Deep domain knowledge will help to do the best job that a developer could possibly do.
 => Guide you through the model you design, the code you write and help you look at it from the domain expert's point of view.
 => Write technically correct code on one hand, and express the domain knowledge on the other hand.

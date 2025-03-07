@@ -1,38 +1,37 @@
 ---
-title: AI-900 - Azure AI Fundamentals
-date: '2024-05-25T15:32:14Z'
-tags: ['certification', 'azure', 'ai']
+title: AI Fundamentals
+date: '2024-09-11T15:32:14Z'
+tags: ['beginner', 'ai']
 draft: true
-summary: AI-900 - Azure AI Fundamentals leaning notes
+summary: AI Fundamentals
 ---
 
-# Machine learning models
-Feature is input, label is output.
-Combining features to create another feature is called feature engineering.
+# Machine learning
+Machine learning or machine learning model is a "thing" labeler
+- A label could be a yes or no
+- A lable could be a price (number)
+- A label could be a group
+- A label could be a category
 
-## [Unsupservised] Clustering: Grouping similar data points together.
-Example: Give a group of people and output group them into different groups (Foolist, lovely, smart).
+To put in short, machine learning is how you put the label on the thing.
+Then how do we make decisions over them.
 
-## [Supervised] Classification: Predicting the category of a data point (Foolist, lovely, smart).
-Example: Give a people and determine which group they should belong to.
-Evaluation metrics: True positive rate.
+# Software engineering vs Machine learning
+- Software engineering: Knowledge + Data -> Recipe: Biz rule -> Answer
+- Machine learning: Data -> Recipe: ML Model -> Answer
+# ML project
+- https://blog.google/outreach-initiatives/sustainability/google-ai-reduce-greenhouse-emissions-project-greenlight/
 
-## [Supervised]Regression: Predicting a numeric value.
-Example: Regression is a form of machine learning used to understand the relationships between variables to predict a desired outcome. Regression predicts a numeric label or outcome based on variables, or features. For example, an automobile sales company might use the characteristics of a car (such as engine size, number of seats, mileage, and so on) to predict its likely selling price. In this case, the characteristics of the car are the features, and the selling price is the label.
-Evaluation metrics: MAE, RMSE and R2
+# ML model
+- Regression: Whenever we have a number as a label, we will talk about regression model.
+ Eg: Predicting the number of people who will buy a product
+- Classification: Whenever we have a category as a label, we will talk about classification model.
+ Eg: IsSpamEmail, IsNotSpamEmail
+- Clustering: Whenever we have a group as a label, we will talk about clustering model.
+ Eg: Grouping people based on their behavior. (The group is not existing before)
 
-# Azure Machine Learning
-## Basic workspace vs Enterprise workspace
-- Enterprise workspace is now fused with Basic
-
-## Azure Machine Learning Designer
-- Provide drag-and-drop interface to create, test, and deploy machine learning models.
-You can drag and drop: Module, dataset
-- Save progress as a draft pipeline.
-- Support R and Python script.
-
-Module:
-- split data: to create training dataset and validation dataset.
-
-# Computer Vision
-Confidence is the  calculated probability of a corect image Classification.
+## Generative AI and Machine Learning
+Both will have different use cases:
+- Machine learning is traditional machine learning model
+- Generative AI is a new model
+ Eg: Generative AI can not be used for error-sensitive applications like self-driving cars.
