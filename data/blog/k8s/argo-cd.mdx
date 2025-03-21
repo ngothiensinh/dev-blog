@@ -1,0 +1,52 @@
+---
+title: ArgoCD Get Started
+date: '2024-02-21T15:32:14Z'
+tags: ['k8s', 'gitops']
+draft: false
+summary: Simple ArgoCD setup
+---
+
+# References:
+Application used for demo: https://learn.microsoft.com/en-us/azure/aks/learn/quick-kubernetes-deploy-portal?tabs=azure-cli
+
+# What GitOps
+
+# Install ArgoCD
+
+## Create K8s namespace for ArgoCd
+kubectl create namespace argocd
+kubectl create namespace deploy-argocd
+
+## Install ArgoCD
+kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+
+## Access ArgoCD by expose via NodePort
+kubectl edit svc argocd-server -n argocd
+type ClusterIP >> NodePort
+
+kubectl get svc -n argocd
+
+## Access ArgoCD by forward
+kubectl port-forward svc/argocd-server -n argocd 8080:443
+
+## Get ArgoCD password (Username is Admin)
+kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d; echo
+
+# Connect ArgoCD to your GitOps repository
+For a private repository, you can use PAT, SSH, or GitHub App to connect to you private repository
+- Repo URL: https://github.com/ngothiensinh/k8s-gitops
+- GitHub App ID: 1172005
+- GitHub App Installation ID: 62997296
+- GitHub App SSH Key: private key
+
+# Connect ArgoCD to you K8s cluster
+- Since ArgoCD and the app we going to deploy are in same cluster, no action needed
+
+# Deploy the app using GitOps
+- Create namespace for app: kubectl create namespace demo-argocd
+- Create application manifests and push to GitHub
+- From ArgoCD web UI, create application that point to GitHub manifest folder
+- Waiting for application is deployed
+
+# Access web front store
+http://localhost:8080
