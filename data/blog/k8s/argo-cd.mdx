@@ -30,8 +30,9 @@ kubectl get svc -n argocd
 kubectl port-forward svc/argocd-server -n argocd 8080:443
 
 ## Get ArgoCD password (Username is Admin)
-> kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d; echo
-
+```bash
+kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d; echo
+```
 # Connect ArgoCD to your GitOps repository
 For a private repository, you can use PAT, SSH, or GitHub App to connect to you private repository
 - Repo URL: https://github.com/ngothiensinh/k8s-gitops
