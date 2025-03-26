@@ -55,14 +55,14 @@ After connect to cluster, you can use `kubectl` to interact with the cluster
 kubectl get componentstatuses
 # Get cluster infor: such as api server url
 kubectl cluster-info
-# Flow of deploy app: kubctl apply > api server > event > controller and scheduler listen and create deployment, replicate set, pod
+# Flow of deploy app: kubectl apply > api server > event > controller and scheduler listen and create deployment, replicate set, pod
 # To listen all event
 kubectl get events --watch
 ```
 
 # AKS Network plugin
 
-Define how the pods and nodes comunicate each other and with external resource. See this decision making from [Microsoft Learn](https://learn.microsoft.com/en-us/training/modules/choose-network-plugin-aks/3-analyze-decision-criteria)
+Define how the pods and nodes communicate each other and with external resource. See this decision making from [Microsoft Learn](https://learn.microsoft.com/en-us/training/modules/choose-network-plugin-aks/3-analyze-decision-criteria)
 
 - Kubenet: Default (Design for fewer 400 nodes)
   - You must define the UDRs (User-defined routes). To reach the pods from outside of the cluster, a load balancer must be used
