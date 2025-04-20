@@ -1,25 +1,47 @@
 ---
 title: AI-900 - Azure AI Fundamentals
 date: '2024-05-25T15:32:14Z'
-tags: ['certification', 'azure', 'ai']
+tags: ['certification', 'azure', 'ai-900']
 draft: true
 summary: AI-900 - Azure AI Fundamentals leaning notes
 ---
 
+# References
+- [Microsoft Learn - AI-900: Azure AI Fundamentals](https://learn.microsoft.com/en-us/credentials/certifications/azure-ai-fundamentals/?practice-assessment-type=certification#certification-take-the-exam)
+
+# Microsoft AI Principles
+- Fairness: AI systems should treat all people fairly. (Man, woman, child, etc.)
+- Reliability and Safety: AI systems should be reliable and safe.
+- Privacy and Security: AI systems should be secure and respect privacy.
+- Inclusiveness: Engage and empower all people regardless of their background.
+- Transparency: AI systems should be understandable.
+  + Provide clear guidelines for developers and users.
+  + The factors used to make the decision for loan applications should be clear.
+- Accountability: AI systems should be accountable to people.
+
+# Microsoft AI Key Elements
+- Machine Learning: The fundamentals of AI system, learn and predict like a human.
+- Anomoly Detection: detect outliers and thing out of place like a human.
+- Computer Vision: be able to see and understand the world like a human.
+- Natural Language Processing: be able to understand and generate human language like a human.
+- Conversational AI: be able to have a conversation with a human like a human.
+
 # Machine learning models
-Feature is input, label is output.
+`Feature` is input, `label` is output.
 Combining features to create another feature is called feature engineering.
+- Supervised machine leaning: Generally humnan labeled data. 
+  + Classification: Predicting the category of a data point (Foolist, lovely, smart)
+    + Example:Give a people and determine which group they should belong to.
+    + Evaluation metrics - True positive rate.
+  + Regression: Predicting a numeric value
+    + Example: Regression is a form of machine learning used to understand the relationships between variables to predict a desired outcome. Regression predicts a numeric label or outcome based on variables, or features. For example, an automobile sales company might use the characteristics of a car (such as engine size, number of seats, mileage, and so on) to predict its likely selling price. In this case, the characteristics of the car are the features, and the selling price is the label.
+    + Evaluation metrics: MAE, RMSE and R2
+- Unsupservised machine leaning: Data has not been labeled, the model need to do its own labeling.
+  + Clustering: Grouping similar data points together.
+    + Example: Give a group of people and output group them into different groups (Foolist, lovely, smart).
+- Reinforcement learning: No data, the model need to learn by itself.
+  + Game AI, Learning tasks, robot navigation.
 
-## [Unsupservised] Clustering: Grouping similar data points together.
-Example: Give a group of people and output group them into different groups (Foolist, lovely, smart).
-
-## [Supervised] Classification: Predicting the category of a data point (Foolist, lovely, smart).
-Example: Give a people and determine which group they should belong to.
-Evaluation metrics: True positive rate.
-
-## [Supervised]Regression: Predicting a numeric value.
-Example: Regression is a form of machine learning used to understand the relationships between variables to predict a desired outcome. Regression predicts a numeric label or outcome based on variables, or features. For example, an automobile sales company might use the characteristics of a car (such as engine size, number of seats, mileage, and so on) to predict its likely selling price. In this case, the characteristics of the car are the features, and the selling price is the label.
-Evaluation metrics: MAE, RMSE and R2
 
 # Azure Machine Learning
 ## Basic workspace vs Enterprise workspace
