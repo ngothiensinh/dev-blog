@@ -6,7 +6,7 @@ draft: false
 summary: Postgres partitioning and sharding explained with examples.
 ---
 
-# Partitioning (PostgresQL)
+# Indexing
 ## Heads up
 
 *The term partitioning (Postgres) used in this guidance refers to the process of dividing a large database table into smaller, more manageable pieces.*
@@ -35,11 +35,14 @@ networks:
     name: my-local-network
 ```
 
+To run
 > docker compose up -d
 
+To access the psql cli
 > docker exec -it pg_demo psql -U postgres -d postgres
 
-# Create table
+## Create table
+```sql
 DROP TABLE IF EXISTS phonebook_1;
 CREATE TABLE phonebook_1 (
     id SERIAL PRIMARY KEY,
@@ -48,8 +51,10 @@ CREATE TABLE phonebook_1 (
     city_code TEXT,
     created_at DATE
 );
+```
 
-# Dump data
+## Dump data
+```sql
 -- Insert 250k rows per year (2021 -> 2025)
 INSERT INTO phonebook_1 (name, phone_number, city_code, created_at)
 SELECT
@@ -58,15 +63,22 @@ SELECT
     'CITY_' || (g % 100),  -- 100 unique city codes
     DATE '2021-01-01' + (g % 1825)  -- spread across ~5 years
 FROM generate_series(1, 1000000) g;
+```
 
-# Search for Contact in specific location (Try before and after indexing)
+## Search for Contact in specific location (Try before and after indexing)
+```sql
 EXPLAIN ANALYZE SELECT * FROM phonebook_1 WHERE city_code = 'CITY_42';
+```
 
-# Create Index on city code
+## Create Index on city code
+```sql
 CREATE INDEX idx_city_code ON phonebook_1(city_code);
 DROP INDEX idx_city_code;
+```
 
+## Partitioning
 # Create Partition table (LIST by Country)
+```sql
 CREATE TABLE phonebook_2 (
     id SERIAL,
     name TEXT,
@@ -84,8 +96,10 @@ BEGIN
       FOR VALUES IN (''CITY_%s'')', i, i);
   END LOOP;
 END $$;
+```
 
 # Dump data again (For new table)
+```sql
 -- Insert 250k rows per year (2021 -> 2025)
 INSERT INTO phonebook_2 (name, phone_number, city_code, created_at)
 SELECT
@@ -94,10 +108,21 @@ SELECT
     'CITY_' || (g % 100),  -- 100 unique city codes
     DATE '2021-01-01' + (g % 1825)  -- spread across ~5 years
 FROM generate_series(1, 1000000) g;
+```
 
 # Query
+```sql
 Single partition query
 EXPLAIN ANALYZE SELECT * FROM phonebook_2 WHERE city_code = 'CITY_42';
+```
 
 Cross partition query:
+```sql
 EXPLAIN ANALYZE SELECT * FROM phonebook_2 WHERE name = 'Name_1';
+```
+
+You can try to index to see the speed is double increasing
+```sql
+CREATE INDEX idx_city_code ON phonebook_1(city_code);
+DROP INDEX idx_city_code;
+```
