@@ -1,0 +1,1 @@
+Public folder for hosting image, all image in blog folder will be moved to here during build process

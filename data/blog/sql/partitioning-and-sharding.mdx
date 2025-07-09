@@ -1,0 +1,103 @@
+---
+title: Database partitioning and sharding
+date: '2025-07-09T15:32:14Z'
+tags: ['postgresql', 'sql', 'database']
+draft: false
+summary: Postgres partitioning and sharding explained with examples.
+---
+
+# Partitioning (PostgresQL)
+## Heads up
+
+*The term partitioning (Postgres) used in this guidance refers to the process of dividing a large database table into smaller, more manageable pieces.*
+
+## Docker compose
+
+```yaml
+services:
+  postgres:
+    image: postgres:latest
+    container_name: pg_demo
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_DB: ${DATABASE_NAME}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    restart: always
+
+volumes:
+  pgdata:
+networks:
+  my-local-network:
+    name: my-local-network
+```
+
+> docker compose up -d
+
+> docker exec -it pg_demo psql -U postgres -d postgres
+
+# Create table
+DROP TABLE IF EXISTS phonebook_1;
+CREATE TABLE phonebook_1 (
+    id SERIAL PRIMARY KEY,
+    name TEXT,
+    phone_number TEXT,
+    city_code TEXT,
+    created_at DATE
+);
+
+# Dump data
+-- Insert 250k rows per year (2021 -> 2025)
+INSERT INTO phonebook_1 (name, phone_number, city_code, created_at)
+SELECT
+    'Name_' || g,
+    '0900' || LPAD((g % 10000)::TEXT, 4, '0'),
+    'CITY_' || (g % 100),  -- 100 unique city codes
+    DATE '2021-01-01' + (g % 1825)  -- spread across ~5 years
+FROM generate_series(1, 1000000) g;
+
+# Search for Contact in specific location (Try before and after indexing)
+EXPLAIN ANALYZE SELECT * FROM phonebook_1 WHERE city_code = 'CITY_42';
+
+# Create Index on city code
+CREATE INDEX idx_city_code ON phonebook_1(city_code);
+DROP INDEX idx_city_code;
+
+# Create Partition table (LIST by Country)
+CREATE TABLE phonebook_2 (
+    id SERIAL,
+    name TEXT,
+    phone_number TEXT,
+    city_code TEXT,
+    created_at DATE
+) PARTITION BY LIST (city_code);
+
+-- Generate 100 partitions
+DO $$
+BEGIN
+  FOR i IN 0..99 LOOP
+    EXECUTE format('
+      CREATE TABLE phonebook_city_%s PARTITION OF phonebook_2
+      FOR VALUES IN (''CITY_%s'')', i, i);
+  END LOOP;
+END $$;
+
+# Dump data again (For new table)
+-- Insert 250k rows per year (2021 -> 2025)
+INSERT INTO phonebook_2 (name, phone_number, city_code, created_at)
+SELECT
+    'Name_' || g,
+    '0900' || LPAD((g % 10000)::TEXT, 4, '0'),
+    'CITY_' || (g % 100),  -- 100 unique city codes
+    DATE '2021-01-01' + (g % 1825)  -- spread across ~5 years
+FROM generate_series(1, 1000000) g;
+
+# Query
+Single partition query
+EXPLAIN ANALYZE SELECT * FROM phonebook_2 WHERE city_code = 'CITY_42';
+
+Cross partition query:
+EXPLAIN ANALYZE SELECT * FROM phonebook_2 WHERE name = 'Name_1';
