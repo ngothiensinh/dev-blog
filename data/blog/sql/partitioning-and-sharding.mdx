@@ -13,6 +13,7 @@ summary: Postgres partitioning and sharding explained with examples.
 
 ## Docker compose
 
+Docker-compose.yml file:
 ```yaml
 services:
   postgres:
@@ -35,11 +36,15 @@ networks:
     name: my-local-network
 ```
 
-To run
-> docker compose up -d
+To run:
+```bash
+docker compose up -d
+```
 
-To access the psql cli
-> docker exec -it pg_demo psql -U postgres -d postgres
+To access the psql cli:
+```bash
+docker exec -it pg_demo psql -U postgres -d postgres
+```
 
 ## Create table
 ```sql
