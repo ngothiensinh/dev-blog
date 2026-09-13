@@ -2,7 +2,9 @@ const siteMetadata = {
   title: 'Software Engineer Learning Notes',
   description:
     "Wellcome to my blog! I am Sinh. In this blog, I combine my work as a software engineer and technical architect, telling my story of constant learning. With this blog, my goal is to share what I've learned, my experiences, and ideas from the world of software engineering. See how I build clever solutions, push forward changes in technology, and help businesses aim high. Join me as we explore and learn together in this always changing tech world.",
-  siteUrl: 'https://www.example.com',
+  siteUrl: 'https://ngothiensinh.github.io/dev-blog',
+  basePath: '/dev-blog', // keep in sync with next.config.mjs
+  siteRepo: 'https://github.com/ngothiensinh/dev-blog',
   locale: 'en-US',
   language: 'en',
   theme: 'system',

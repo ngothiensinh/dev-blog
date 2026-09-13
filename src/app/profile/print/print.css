@@ -1,0 +1,183 @@
+/* A4 print layout for /profile/print — white page, IBM Plex Mono body, Barlow Condensed headings. */
+@page {
+  size: A4;
+  margin: 12mm 13mm;
+}
+
+html[data-cv]:has(.cv-print),
+html[data-cv]:has(.cv-print) body,
+[data-cv-root]:has(.cv-print) {
+  background: #fff;
+  color: #14181f;
+  color-scheme: light;
+}
+
+.cv-print {
+  max-width: 186mm;
+  margin: 0 auto;
+  padding: 12mm 0;
+  font: 8.5pt/1.42 var(--mono);
+  color: #14181f;
+}
+@media print {
+  .cv-print {
+    max-width: none;
+    padding: 0;
+  }
+}
+.cv-print a {
+  color: inherit;
+  text-decoration: none;
+}
+.cv-print h1,
+.cv-print h2,
+.cv-print h3 {
+  font-family: var(--display);
+  font-weight: 500;
+  margin: 0;
+  line-height: 1;
+}
+.cv-print h1 {
+  font-size: 26pt;
+  letter-spacing: -0.01em;
+}
+.cv-print h2 {
+  font-size: 9pt;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #b8642c;
+  margin: 0 0 6pt;
+  padding-bottom: 3pt;
+  border-bottom: 1px solid #d9dee6;
+  font-family: var(--mono);
+  font-weight: 500;
+}
+.cv-print h3 {
+  font-size: 12pt;
+}
+.cv-print .p-label {
+  margin-top: 4pt;
+  font-size: 9pt;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #5d6b84;
+}
+.cv-print .p-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 12pt;
+  padding-bottom: 8pt;
+  border-bottom: 2px solid #14181f;
+  margin-bottom: 10pt;
+}
+.cv-print .p-contact {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  text-align: right;
+  font-size: 8pt;
+  line-height: 1.5;
+  color: #3a4453;
+}
+.cv-print .p-sec {
+  margin-bottom: 9pt;
+}
+.cv-print h2 {
+  break-after: avoid;
+}
+.cv-print .p-list li,
+.cv-print .p-projects li,
+.cv-print .p-skill {
+  break-inside: avoid;
+}
+.cv-print .p-summary {
+  margin: 0;
+  text-align: justify;
+}
+.cv-print .p-item {
+  margin-bottom: 7pt;
+  break-inside: avoid;
+}
+.cv-print .p-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 10pt;
+}
+.cv-print .p-org {
+  font-family: var(--mono);
+  font-size: 8pt;
+  color: #5d6b84;
+  font-weight: 400;
+}
+.cv-print .p-dates {
+  font-size: 7.6pt;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #5d6b84;
+  white-space: nowrap;
+}
+.cv-print .p-item ul {
+  margin: 3pt 0 0;
+  padding-left: 10pt;
+}
+.cv-print .p-item li {
+  margin: 0 0 1.5pt;
+}
+.cv-print .p-item li::marker {
+  color: #ff9f5a;
+}
+.cv-print .p-tags {
+  margin-top: 2pt;
+  font-size: 7.6pt;
+  color: #5d6b84;
+}
+.cv-print .p-two {
+  display: grid;
+  grid-template-columns: 1.05fr 1fr;
+  gap: 0 14pt;
+}
+.cv-print .p-skill {
+  margin-bottom: 3pt;
+}
+.cv-print .p-skill b {
+  font-weight: 500;
+  color: #14181f;
+}
+.cv-print .p-skill b::after {
+  content: ' — ';
+  color: #b8642c;
+}
+.cv-print .p-list {
+  list-style: none;
+  margin: 0 0 8pt;
+  padding: 0;
+}
+.cv-print .p-list li {
+  display: flex;
+  justify-content: space-between;
+  gap: 8pt;
+  padding: 1.5pt 0;
+  border-bottom: 1px dotted #d9dee6;
+}
+.cv-print .p-projects {
+  margin: 0;
+  padding-left: 10pt;
+}
+.cv-print .p-projects li {
+  margin-bottom: 1.5pt;
+}
+.cv-print .p-projects li::marker {
+  color: #ff9f5a;
+}
+.cv-print .p-projects b {
+  font-weight: 500;
+}
+.cv-print .p-foot {
+  margin-top: 8pt;
+  padding-top: 4pt;
+  border-top: 1px solid #d9dee6;
+  font-size: 7.2pt;
+  color: #8a95a8;
+}

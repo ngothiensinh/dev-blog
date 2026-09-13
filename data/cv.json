@@ -1,0 +1,384 @@
+{
+  "$schema": "https://raw.githubusercontent.com/jsonresume/resume-schema/v1.0.0/schema.json",
+  "_todos": [
+    "work[0].startDate — month/year the Software Architect / Senior Software Engineer role started",
+    "work[0].highlights — confirm project names, dates and any metrics for shipping & logistics, hydro/wind HMI and the AI projects",
+    "work[1].startDate / work[1].endDate — Technical Architect period at MTI",
+    "work[2].endDate — when the Software Engineer role at MTI ended",
+    "certificates[*].url — add Credly / Microsoft Learn credential links; confirm the AI-900 date",
+    "projects[*] — fill TODO dates, disclosable clients/domains and outcomes; delete any you don't want public"
+  ],
+  "basics": {
+    "name": "Ngo Thien Sinh",
+    "label": "Software Architect · Senior Software Engineer",
+    "email": "ngothiensinh@gmail.com",
+    "url": "https://ngothiensinh.github.io/dev-blog/",
+    "summary": "Software Architect / Senior Software Engineer with experience in designing and building business-oriented software systems across different domains, including shipping and logistics, eKYC, mobile payment, web applications, and industrial monitoring. My main focus is cloud and software architecture, mainly working with Azure, Microsoft Foundry, .NET, NestJS, DDD, and Microservices, with additional experience in AWS and GCP. I have also worked on industrial HMI and monitoring systems for hydro and wind power plants, covering IEC 104, Modbus, time-series data, anomaly detection, alerting, and device control. I work closely with AI Engineers to bring AI into real-world products, covering solution architecture, infrastructure, system integration, and deployment. Projects include nurse recording summarization, medical risk prediction, rust detection, and an on-premise platform for computer vision model training. I am also interested in using AI throughout the SDLC to improve development efficiency. Depending on the problem, I can work independently as a solo engineer or build and lead a small engineering team to turn business ideas into working solutions and deliver real business value.",
+    "location": {
+      "city": "Da Nang",
+      "region": "Da Nang",
+      "countryCode": "VN"
+    },
+    "profiles": [
+      {
+        "network": "LinkedIn",
+        "username": "ngo-thien-sinh",
+        "url": "https://www.linkedin.com/in/ngo-thien-sinh/"
+      },
+      {
+        "network": "GitHub",
+        "username": "ngothiensinh",
+        "url": "https://github.com/ngothiensinh"
+      },
+      {
+        "network": "Medium",
+        "username": "ngothiensinh",
+        "url": "https://ngothiensinh.medium.com/"
+      }
+    ]
+  },
+  "work": [
+    {
+      "name": "MTI Technology",
+      "location": "Da Nang, Vietnam",
+      "position": "Software Architect / Senior Software Engineer",
+      "url": "https://mti-tech.vn/",
+      "startDate": "TODO:YYYY-MM",
+      "endDate": null,
+      "summary": "Own cloud and software architecture for business-oriented systems across shipping & logistics, eKYC and mobile payment, and bring AI into production alongside AI engineers.",
+      "highlights": [
+        "Designed and delivered cloud-native business systems on Azure and Microsoft Foundry with .NET and NestJS, applying DDD and microservices; additional delivery on AWS and GCP. (TODO: name the shipping & logistics platform, dates, scale)",
+        "Architected industrial HMI and monitoring systems for hydro and wind power plants: IEC 104 and Modbus device integration, time-series storage, anomaly detection, alerting and device control. (TODO: dates, number of plants / devices)",
+        "Solution architecture, infrastructure, integration and deployment for AI products built with AI engineers — nurse recording summarization, medical risk prediction, rust detection and an on-premise platform for computer-vision model training. (TODO: dates, outcomes)",
+        "Apply AI across the SDLC to raise delivery efficiency; work as a solo engineer or build and lead a small engineering team from business idea to working solution."
+      ],
+      "keywords": [
+        "Azure",
+        "Microsoft Foundry",
+        ".NET",
+        "NestJS",
+        "DDD",
+        "Microservices",
+        "AWS",
+        "GCP",
+        "IEC 104",
+        "Modbus"
+      ]
+    },
+    {
+      "name": "MTI Technology",
+      "location": "Da Nang, Vietnam",
+      "position": "Technical Architect",
+      "url": "https://mti-tech.vn/",
+      "startDate": "TODO:YYYY-MM",
+      "endDate": "TODO:YYYY-MM",
+      "summary": "Technical ownership of the eKYC service and the QR Code Payment service.",
+      "highlights": [
+        "Supported the PO in designing and improving eKYC product features; refined designs with security and technical consultants.",
+        "Researched tooling to raise team productivity and product quality; continuously improved and automated the team process.",
+        "Owned people development, team skills, product security risk and non-functional requirements, working with the security and operations teams.",
+        "Kept the QR Code Payment service stable in maintenance mode with current security updates while optimising capital and operational expenses."
+      ],
+      "keywords": [
+        ".NET",
+        "Azure",
+        "Terraform",
+        "Vue.js",
+        "Azure DevOps",
+        "OIDC / OAuth2",
+        "Security"
+      ]
+    },
+    {
+      "name": "MTI Technology",
+      "location": "Da Nang, Vietnam",
+      "position": "Software Engineer",
+      "url": "https://mti-tech.vn/",
+      "startDate": "2019-07",
+      "endDate": "TODO:YYYY-MM",
+      "summary": "Full-stack delivery on eKYC, QR Code Payment and an athlete-management web app.",
+      "highlights": [
+        "eKYC: remote identity verification for banks and insurers — requirements with the PO, design, coding, code review, test cases and performance tests (.NET, Azure, Vue.js/Vuex, Terraform IaC).",
+        "QR Code Payment: mobile app plus shop-owner and operator web apps integrating multiple bank APIs (ASP.NET Core, SQL Server, React/Redux-Saga/RTK, Azure, OIDC/OAuth2) with CI/CD, unit, UI, BDD and performance tests.",
+        "Athlete management: responsive web app (hybrid mobile, tablet, desktop) for daily condition, lifestyle, practice and meal tracking; paid down technical debt with unit tests and refactoring (ASP.NET Core API/MVC, EF Core, Azure)."
+      ],
+      "keywords": [
+        "ASP.NET Core",
+        "Azure",
+        "SQL Server",
+        "EF Core",
+        "React",
+        "Vue.js",
+        "Terraform",
+        "K6",
+        "Cypress"
+      ]
+    },
+    {
+      "name": "FPT Software",
+      "location": "Da Nang, Vietnam",
+      "position": ".NET Web Developer",
+      "url": "https://fptsoftware.com/",
+      "startDate": "2018-01",
+      "endDate": "2019-06",
+      "summary": "Legacy modernisation and core-service development for enterprise clients.",
+      "highlights": [
+        "Migrated a legacy C++ system to ASP.NET Core microservices step by step; produced detailed designs from the high-level design (Angular 7, Oracle, SQL Server, ActiveMQ/JBoss, Kibana, Azure DevOps).",
+        "Built core mini-services — settings, logging, messaging, user management — with ASP.NET MVC / Web API, SignalR, unit and integration tests.",
+        "Implemented the back end of a course and learner-progress management web app on ASP.NET MVC 5 from an HTML prototype."
+      ],
+      "keywords": [
+        "ASP.NET Core",
+        "Microservices",
+        "Angular",
+        "Oracle",
+        "SQL Server",
+        "ActiveMQ",
+        "SignalR"
+      ]
+    },
+    {
+      "type": "internship",
+      "name": "STIC — Center for Science, Technology & Investment Consultancy",
+      "location": "Da Nang, Vietnam",
+      "position": "Embedded Developer",
+      "startDate": "2018-03",
+      "endDate": "2018-08",
+      "summary": "Structural health monitoring (final-year project).",
+      "highlights": [
+        "Collected structural sensor data, analysed, visualised and alerted on it — LabVIEW, C#, SQL Server."
+      ],
+      "keywords": ["LabVIEW", "C#", "SQL Server", "Sensors"]
+    },
+    {
+      "type": "internship",
+      "name": "FPT Software",
+      "location": "Da Nang, Vietnam",
+      "position": "Intern",
+      "startDate": "2017-06",
+      "endDate": "2017-08",
+      "highlights": [
+        "Upgraded the Telerik and jQuery front-end libraries of an ASP.NET MVC ERP application."
+      ],
+      "keywords": ["ASP.NET MVC", "Telerik", "jQuery"]
+    },
+    {
+      "type": "internship",
+      "name": "SDC Da Nang — Software Development Center",
+      "location": "Da Nang, Vietnam",
+      "position": "Intern",
+      "startDate": "2016-06",
+      "endDate": "2016-08",
+      "highlights": [
+        "Researched IoT and Azure IoT; built a simple system receiving real-time data from many simulated sensors."
+      ],
+      "keywords": ["Azure IoT", "IoT"]
+    }
+  ],
+  "education": [
+    {
+      "institution": "Danang University of Science and Technology",
+      "url": "https://dut.udn.vn/",
+      "area": "Software Engineering — PFIEV (Programme de Formation d'Ingénieurs d'Excellence au Vietnam)",
+      "studyType": "Engineer's degree",
+      "startDate": "2013",
+      "endDate": "2018",
+      "score": "Good"
+    }
+  ],
+  "certificates": [
+    {
+      "name": "Microsoft Certified: Azure Solutions Architect Expert",
+      "issuer": "Microsoft",
+      "date": "2022-08"
+    },
+    {
+      "name": "Microsoft Certified: Azure Administrator Associate",
+      "issuer": "Microsoft",
+      "date": "2022-03"
+    },
+    {
+      "name": "Microsoft Certified: DevOps Engineer Expert",
+      "issuer": "Microsoft",
+      "date": "2021-04"
+    },
+    {
+      "name": "Microsoft Certified: Azure Developer Associate",
+      "issuer": "Microsoft",
+      "date": "2020-07"
+    },
+    {
+      "name": "Microsoft Certified: Azure Fundamentals",
+      "issuer": "Microsoft",
+      "date": "2020-06"
+    },
+    {
+      "name": "Microsoft Certified: Azure AI Fundamentals",
+      "issuer": "Microsoft",
+      "date": "TODO:YYYY-MM"
+    }
+  ],
+  "skills": [
+    {
+      "name": "Cloud",
+      "keywords": [
+        "Azure",
+        "Microsoft Foundry",
+        "AWS",
+        "GCP",
+        "Azure DevOps",
+        "GitHub Actions",
+        "Terraform"
+      ]
+    },
+    {
+      "name": "Backend · Architecture",
+      "keywords": [
+        ".NET / C#",
+        "NestJS",
+        "DDD",
+        "Microservices",
+        "Event Sourcing",
+        "SQL Server / EF Core",
+        "Cosmos DB",
+        "OIDC / OAuth2"
+      ]
+    },
+    {
+      "name": "AI apps",
+      "keywords": [
+        "LLM integration",
+        "Speech-to-text summarization",
+        "Risk prediction",
+        "Computer vision deployment",
+        "On-premise model training platform",
+        "AI in the SDLC"
+      ]
+    },
+    {
+      "name": "Industrial · IoT",
+      "keywords": [
+        "IEC 104",
+        "Modbus",
+        "HMI",
+        "Time-series data",
+        "Anomaly detection",
+        "Alerting",
+        "Device control"
+      ]
+    },
+    {
+      "name": "Frontend",
+      "keywords": ["React / Redux", "Vue.js / Vuex", "Angular"]
+    },
+    {
+      "name": "Quality · Tooling",
+      "keywords": ["K6", "JMeter", "Cypress", "BDD", "Scrum", "Power Automate"]
+    }
+  ],
+  "projects": [
+    {
+      "name": "eKYC service",
+      "entity": "MTI Technology",
+      "type": "product",
+      "startDate": "2019",
+      "endDate": "TODO:YYYY",
+      "description": "Remote identity verification for banks and insurance institutions.",
+      "roles": ["Software Engineer", "Technical Architect"],
+      "keywords": [".NET", "Azure", "Vue.js", "Terraform", "Security"]
+    },
+    {
+      "name": "QR Code Payment",
+      "entity": "MTI Technology",
+      "type": "product",
+      "startDate": "2019",
+      "endDate": "TODO:YYYY",
+      "description": "QR payment system connecting multiple bank APIs: mobile app, shop-owner web app and operator back office.",
+      "roles": ["Software Engineer", "Technical Architect"],
+      "keywords": ["ASP.NET Core", "React", "SQL Server", "Azure", "OIDC / OAuth2"]
+    },
+    {
+      "name": "Shipping & logistics platform",
+      "entity": "MTI Technology",
+      "type": "product",
+      "startDate": "TODO:YYYY",
+      "endDate": null,
+      "description": "TODO: one-line description of the shipping & logistics system and your role in its architecture.",
+      "roles": ["Software Architect"],
+      "keywords": ["Azure", ".NET", "NestJS", "DDD", "Microservices"]
+    },
+    {
+      "name": "Hydro & wind power plant HMI / monitoring",
+      "entity": "MTI Technology",
+      "type": "product",
+      "startDate": "TODO:YYYY",
+      "endDate": null,
+      "description": "Industrial HMI and monitoring for hydro and wind power plants — device integration, time-series data, anomaly detection, alerting and control. (TODO: scale, dates)",
+      "roles": ["Software Architect"],
+      "keywords": ["IEC 104", "Modbus", "Time-series", "Anomaly detection", "Alerting"]
+    },
+    {
+      "name": "Nurse recording summarization",
+      "entity": "MTI Technology",
+      "type": "ai",
+      "startDate": "TODO:YYYY",
+      "description": "Speech-to-text and LLM summarization of nurse recordings; solution architecture, infrastructure and deployment. (TODO: dates, outcome)",
+      "roles": ["Solution Architect"],
+      "keywords": ["Azure", "Microsoft Foundry", "LLM"]
+    },
+    {
+      "name": "Medical risk prediction",
+      "entity": "MTI Technology",
+      "type": "ai",
+      "startDate": "TODO:YYYY",
+      "description": "Integration and deployment of a medical risk-prediction model into a production system. (TODO: dates, outcome)",
+      "roles": ["Solution Architect"],
+      "keywords": ["ML integration", "Azure"]
+    },
+    {
+      "name": "Rust detection",
+      "entity": "MTI Technology",
+      "type": "ai",
+      "startDate": "TODO:YYYY",
+      "description": "Computer-vision rust detection brought from model to deployed product. (TODO: dates, outcome)",
+      "roles": ["Solution Architect"],
+      "keywords": ["Computer vision", "Deployment"]
+    },
+    {
+      "name": "On-premise computer-vision training platform",
+      "entity": "MTI Technology",
+      "type": "ai",
+      "startDate": "TODO:YYYY",
+      "description": "On-premise platform for training computer-vision models — infrastructure, integration and operations. (TODO: dates, outcome)",
+      "roles": ["Solution Architect"],
+      "keywords": ["On-premise", "MLOps", "Computer vision"]
+    },
+    {
+      "name": "Athlete management",
+      "entity": "MTI Technology",
+      "type": "product",
+      "startDate": "2019",
+      "endDate": "2020",
+      "description": "Responsive web app (hybrid mobile, tablet, desktop) recording athletes' daily condition, lifestyle, practice and meals for their leaders.",
+      "roles": ["Software Engineer"],
+      "keywords": ["ASP.NET Core", "EF Core", "Azure"]
+    },
+    {
+      "name": "Legacy C++ → ASP.NET Core microservices",
+      "entity": "FPT Software",
+      "type": "migration",
+      "startDate": "2018",
+      "endDate": "2019",
+      "description": "Incremental migration of a legacy C++ system to a microservice architecture on ASP.NET Core.",
+      "roles": [".NET Web Developer"],
+      "keywords": ["ASP.NET Core", "Angular", "Oracle", "ActiveMQ"]
+    }
+  ],
+  "meta": {
+    "version": "2.0.0",
+    "lastModified": "2026-09-13",
+    "pdf": "/cv.pdf",
+    "repo": "https://github.com/ngothiensinh/dev-blog",
+    "actions": "https://github.com/ngothiensinh/dev-blog/actions/workflows/nextjs.yml"
+  }
+}

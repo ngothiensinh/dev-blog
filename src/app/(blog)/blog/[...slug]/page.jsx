@@ -1,6 +1,6 @@
 import PostLayout from './PostLayout';
 import { notFound } from 'next/navigation';
-import { getPostByPath, getPosts } from '../../../../data/lib/dataLayer';
+import { getPostByPath, getPosts } from '@/../data/lib/dataLayer';
 import MDXRemoteWrapper from '@/components/CustomMDX/MDXRemoteWrapper';
 
 export async function generateStaticParams() {

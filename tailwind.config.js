@@ -12,6 +12,33 @@ module.exports = {
     extend: {
       colors: {
         primary: colors.pink,
+        // /profile design tokens — namespaced so Tailwind's cyan/violet/teal scales stay intact
+        cv: {
+          void: '#0b0e14',
+          steel: '#1c2331',
+          line: '#3a4a63',
+          cyan: '#6fd3ff',
+          violet: '#a08cff',
+          teal: '#5ee0c4',
+          amber: '#ff9f5a',
+          ink: '#e6ebf2',
+          muted: '#8a95a8',
+        },
+      },
+      fontFamily: {
+        display: [
+          'var(--font-display)',
+          'Arial Narrow',
+          'Impact',
+          'sans-serif',
+        ],
+        plex: [
+          'var(--font-mono)',
+          'SFMono-Regular',
+          'Menlo',
+          'Consolas',
+          'monospace',
+        ],
       },
     },
     typography: ({ theme }) => ({

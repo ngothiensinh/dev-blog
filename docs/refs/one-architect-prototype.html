@@ -1,0 +1,643 @@
+<title>One Architect, N Agents</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root {
+    --void: #0b0e14;
+    --steel: #1c2331;
+    --line: #3a4a63;
+    --cyan: #6fd3ff;
+    --violet: #a08cff;
+    --teal: #5ee0c4;
+    --amber: #ff9f5a;
+    --ink: #e6ebf2;
+    --muted: #8a95a8;
+    --display: "Barlow Condensed", "Arial Narrow", Impact, sans-serif;
+    --mono: "IBM Plex Mono", "SFMono-Regular", Menlo, Consolas, monospace;
+  }
+  html { color-scheme: dark; scroll-behavior: auto; }
+  body {
+    margin: 0;
+    background: var(--void);
+    color: var(--ink);
+    font-family: var(--mono);
+    overflow-x: hidden;
+  }
+  #scroll { height: 720vh; position: relative; }
+  #gl {
+    position: fixed; inset: 0; width: 100%; height: 100%;
+    display: block; z-index: 0;
+  }
+  #hud {
+    position: fixed; inset: 0; z-index: 2; pointer-events: none;
+    padding-block: 28px; padding-inline: clamp(16px, 4vw, 56px);
+  }
+  #leaders { position: fixed; inset: 0; z-index: 1; pointer-events: none; width: 100%; height: 100%; }
+
+  /* Rail */
+  .rail {
+    position: absolute; left: clamp(16px, 4vw, 56px); top: 34px;
+    display: flex; flex-direction: column; gap: 22px;
+    font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted);
+  }
+  .rail::before {
+    content: ""; position: absolute; left: -14px; top: 0; bottom: 0; width: 1px;
+    background: var(--line);
+  }
+  .rail .fill {
+    position: absolute; left: -14px; top: 0; width: 1px; height: 0%;
+    background: var(--amber); transition: height .15s linear;
+  }
+  .rail .phase { display: flex; flex-direction: column; gap: 6px; position: relative; }
+  .rail .phase > span { color: var(--muted); transition: color .3s; }
+  .rail .phase.on > span { color: var(--ink); }
+  .rail .steps { display: flex; flex-direction: column; gap: 4px; font-size: 10px; letter-spacing: .1em; text-transform: none; }
+  .rail .steps span { color: var(--line); transition: color .3s; }
+  .rail .steps span.on { color: var(--amber); }
+  .rail .steps span.done { color: var(--muted); }
+
+  /* Headline block */
+  .head {
+    position: absolute; left: clamp(16px, 4vw, 56px); bottom: clamp(24px, 6vh, 64px);
+    width: min(34rem, 88vw); height: 0;
+  }
+  .head .eyebrow {
+    font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--amber);
+    margin-bottom: 8px;
+  }
+  .head h1 {
+    font-family: var(--display); font-weight: 500; line-height: .95;
+    font-size: clamp(38px, 6.2vw, 84px); margin: 0; text-wrap: balance;
+    letter-spacing: -.01em;
+  }
+  .head h1 em { font-style: normal; color: var(--amber); }
+  .head p { margin: 14px 0 0; color: var(--muted); font-size: 13px; line-height: 1.55; max-width: 30rem; }
+  .slide { position: absolute; left: 0; bottom: 0; width: 100%; opacity: 0; transform: translateY(14px); transition: opacity .45s ease, transform .45s ease; }
+  .slide.on { opacity: 1; transform: none; }
+
+  /* Anchored annotations */
+  .note {
+    position: absolute; left: 0; top: 0; transform: translate(0,0);
+    font-size: 11.5px; line-height: 1.4; color: var(--ink);
+    opacity: 0; transition: opacity .35s ease; white-space: nowrap;
+    padding: 5px 8px; background: rgba(11,14,20,.55); border-left: 1px solid var(--line);
+    backdrop-filter: blur(3px);
+  }
+  .note b { display: block; font-weight: 500; color: var(--cyan); letter-spacing: .08em; text-transform: uppercase; font-size: 10px; }
+  .note.warm b { color: var(--amber); }
+  .note.violet b { color: var(--violet); }
+  .note.teal b { color: var(--teal); }
+  .note small { color: var(--muted); }
+  .note.on { opacity: 1; }
+
+  /* Controls (review gate, ship) */
+  .ctrl {
+    position: absolute; right: clamp(16px, 4vw, 56px); bottom: clamp(24px, 6vh, 64px);
+    display: flex; gap: 10px; align-items: center; pointer-events: none;
+    opacity: 0; transform: translateY(10px); transition: opacity .4s, transform .4s;
+  }
+  .ctrl.on { opacity: 1; transform: none; pointer-events: auto; }
+  .btn {
+    font: 500 12px/1 var(--mono); letter-spacing: .1em; text-transform: uppercase;
+    padding: 12px 18px; border: 1px solid var(--line); background: rgba(28,35,49,.7);
+    color: var(--ink); cursor: pointer; border-radius: 2px;
+  }
+  .btn:hover { border-color: var(--cyan); }
+  .btn:focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
+  .btn.primary { background: var(--amber); color: var(--void); border-color: var(--amber); }
+  .btn.primary:hover { filter: brightness(1.08); }
+  .toast {
+    position: absolute; right: clamp(16px, 4vw, 56px); bottom: calc(clamp(24px, 6vh, 64px) + 58px);
+    font-size: 12px; color: var(--muted); opacity: 0; transition: opacity .3s;
+  }
+  .toast.on { opacity: 1; }
+
+  .hint {
+    position: absolute; left: 50%; bottom: 18px; transform: translateX(-50%);
+    font-size: 10px; letter-spacing: .18em; text-transform: uppercase; color: var(--muted);
+    display: flex; align-items: center; gap: 10px; transition: opacity .4s;
+  }
+  .hint::after { content: ""; width: 1px; height: 28px; background: linear-gradient(var(--amber), transparent); animation: drop 1.6s ease-in-out infinite; }
+  @keyframes drop { 0% { transform: translateY(-6px); opacity: 0 } 50% { opacity: 1 } 100% { transform: translateY(8px); opacity: 0 } }
+
+  .corner {
+    position: absolute; right: clamp(16px, 4vw, 56px); top: 28px; text-align: right;
+    font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted);
+  }
+  .corner strong { display: block; color: var(--ink); font-weight: 500; }
+
+  @media (max-width: 640px) {
+    .rail { display: none; }
+    .head { width: 84vw; }
+    .head p { display: none; }
+    .note { font-size: 10px; }
+    .corner { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hint::after { animation: none; }
+    .slide, .note, .ctrl { transition: none; }
+  }
+</style>
+
+<canvas id="gl" aria-label="3D scene: an architect at a desk with AI agents around him"></canvas>
+<svg id="leaders" aria-hidden="true"></svg>
+
+<div id="hud">
+  <div class="corner"><strong>Ngo Thien Sinh</strong>developer · architect · Vietnam</div>
+
+  <nav class="rail" aria-label="Lifecycle phases">
+    <div class="fill" id="railFill"></div>
+    <div class="phase" data-phase="0"><span>Inception</span>
+      <div class="steps"><span data-step="1">intent</span><span data-step="2">design</span></div></div>
+    <div class="phase" data-phase="1"><span>Construction</span>
+      <div class="steps"><span data-step="3">build</span><span data-step="4">review</span></div></div>
+    <div class="phase" data-phase="2"><span>Operations</span>
+      <div class="steps"><span data-step="5">ship</span></div></div>
+  </nav>
+
+  <div class="head">
+    <div class="slide on" data-t="0">
+      <div class="eyebrow">AI-driven development lifecycle · live</div>
+      <h1>One architect.<br>N agents.<br><em>Every decision still mine.</em></h1>
+      <p>Scroll to hand a spec to the agents and follow it through design, build, review and ship.</p>
+    </div>
+    <div class="slide" data-t="1">
+      <div class="eyebrow">01 · intent</div>
+      <h1>It starts with <em>a spec</em>, not a prompt.</h1>
+      <p>Requirements, constraints and acceptance criteria — written by me, in markdown, committed to the repo.</p>
+    </div>
+    <div class="slide" data-t="2">
+      <div class="eyebrow">02 · design</div>
+      <h1>Agents draft the <em>architecture</em>.</h1>
+      <p>Planner turns the spec into stories; Architect draws the C4 and writes design.md. I read both.</p>
+    </div>
+    <div class="slide" data-t="3">
+      <div class="eyebrow">03 · build</div>
+      <h1>Builders work <em>in parallel</em>.</h1>
+      <p>Each unit gets its own agent, its own branch, its own tests. Green means a review is queued.</p>
+    </div>
+    <div class="slide" data-t="4">
+      <div class="eyebrow">04 · review · human gate</div>
+      <h1>Nothing ships <em>without me</em>.</h1>
+      <p>The diff comes back to my desk. Approve, reject, or steer — the agents wait.</p>
+    </div>
+    <div class="slide" data-t="5">
+      <div class="eyebrow">05 · ship</div>
+      <h1>Shipped: <em>cv.pdf</em></h1>
+      <p>GitHub Actions builds the site and renders the CV from the same cv.json. This page is the artifact.</p>
+    </div>
+  </div>
+
+  <div class="note warm" id="n-spec"><b>spec.md</b>portfolio site · PDF export · JSON source<br><small>author: me</small></div>
+  <div class="note" id="n-planner"><b>Planner</b>3 user stories · 2 units</div>
+  <div class="note violet" id="n-arch"><b>Architect</b>design.md · C4 · risks</div>
+  <div class="note teal" id="n-b1"><b>Builder α</b>unit: web · astro + gsap</div>
+  <div class="note teal" id="n-b2"><b>Builder β</b>unit: pdf · playwright</div>
+  <div class="note" id="n-rev"><b>Reviewer</b>lint · tests 14/14 · diff ready</div>
+  <div class="note warm" id="n-me"><b>Human gate</b>final say on every merge</div>
+  <div class="note" id="n-ops"><b>Ops</b>github actions · pages · release</div>
+  <div class="note warm" id="n-crate"><b>artifact</b>cv.pdf · v1.4.0</div>
+
+  <div class="toast" id="toast"></div>
+  <div class="ctrl" id="gate">
+    <button class="btn" id="btnReject" type="button">Reject · iterate</button>
+    <button class="btn primary" id="btnApprove" type="button">Approve merge</button>
+  </div>
+  <div class="ctrl" id="ship">
+    <button class="btn primary" id="btnPdf" type="button">Download cv.pdf</button>
+  </div>
+
+  <div class="hint" id="hint">scroll</div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script type="module">
+import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js';
+
+const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const C = { void: 0x0b0e14, steel: 0x1c2331, line: 0x3a4a63, cyan: 0x6fd3ff, violet: 0xa08cff, teal: 0x5ee0c4, amber: 0xff9f5a, ink: 0xe6ebf2, muted: 0x8a95a8, dark: 0x10151f };
+
+/* ---------- renderer / scene ---------- */
+const canvas = document.getElementById('gl');
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: false });
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.1;
+
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(C.void);
+scene.fog = new THREE.FogExp2(C.void, 0.038);
+
+const camera = new THREE.PerspectiveCamera(42, 1, 0.1, 100);
+
+scene.add(new THREE.HemisphereLight(0x7f93b8, 0x0b0e14, 0.9));
+const key = new THREE.DirectionalLight(0xfff1e0, 1.6);
+key.position.set(6, 10, 6);
+key.castShadow = true;
+key.shadow.mapSize.set(1024, 1024);
+key.shadow.camera.left = -14; key.shadow.camera.right = 14; key.shadow.camera.top = 14; key.shadow.camera.bottom = -14;
+key.shadow.bias = -0.0008;
+scene.add(key);
+const rim = new THREE.DirectionalLight(0x6fd3ff, 0.5);
+rim.position.set(-8, 4, -6);
+scene.add(rim);
+
+const mat = (color, opts = {}) => new THREE.MeshStandardMaterial({ color, flatShading: true, roughness: .85, metalness: .05, ...opts });
+const M = {
+  steel: mat(C.steel), line: mat(C.line), dark: mat(C.dark), ink: mat(0x2a3446),
+  amber: mat(C.amber, { roughness: .6 }), amberDark: mat(0xb8642c),
+  skin: mat(0xffc9a0, { roughness: .7 }), glass: mat(C.dark, { roughness: .3, metalness: .4 }),
+};
+const box = (w, h, d, m, x = 0, y = 0, z = 0, shadow = true) => {
+  const g = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), m);
+  g.position.set(x, y, z); g.castShadow = shadow; g.receiveShadow = shadow; return g;
+};
+
+/* ---------- ground & platform ---------- */
+const platform = new THREE.Mesh(new THREE.CylinderGeometry(11, 11.6, 0.7, 48), M.steel);
+platform.position.y = -0.35; platform.receiveShadow = true; scene.add(platform);
+const ring = new THREE.Mesh(new THREE.TorusGeometry(11.05, 0.05, 8, 96), new THREE.MeshBasicMaterial({ color: C.line }));
+ring.rotation.x = Math.PI / 2; ring.position.y = 0.01; scene.add(ring);
+const grid = new THREE.GridHelper(22, 22, 0x243044, 0x1a2230);
+grid.position.y = 0.015; grid.material.transparent = true; grid.material.opacity = 0.55; scene.add(grid);
+// faint floor labels (phase zones) as thin rings
+for (const [x, z, r, col] of [[-6, -1.5, 3.2, C.violet], [5.5, 0, 3.2, C.teal], [-2, 7, 2.2, C.cyan]]) {
+  const zr = new THREE.Mesh(new THREE.RingGeometry(r - 0.03, r, 64), new THREE.MeshBasicMaterial({ color: col, transparent: true, opacity: .25, side: THREE.DoubleSide }));
+  zr.rotation.x = -Math.PI / 2; zr.position.set(x, 0.02, z); scene.add(zr);
+}
+
+/* ---------- canvas textures ---------- */
+function screenTex(w = 512, h = 320) {
+  const cv = document.createElement('canvas'); cv.width = w; cv.height = h;
+  const ctx = cv.getContext('2d');
+  const tex = new THREE.CanvasTexture(cv); tex.colorSpace = THREE.SRGBColorSpace;
+  return { cv, ctx, tex };
+}
+function drawCode(s, lines, progress, accent = '#6fd3ff') {
+  const { ctx, cv, tex } = s;
+  ctx.fillStyle = '#0e131c'; ctx.fillRect(0, 0, cv.width, cv.height);
+  ctx.fillStyle = '#1a2231'; ctx.fillRect(0, 0, cv.width, 26);
+  ctx.font = '500 13px "IBM Plex Mono", monospace'; ctx.fillStyle = '#8a95a8'; ctx.fillText(lines.title, 12, 18);
+  const total = lines.body.reduce((a, l) => a + l.length, 0);
+  let budget = Math.floor(total * Math.max(0, Math.min(1, progress)));
+  ctx.font = '15px "IBM Plex Mono", monospace';
+  lines.body.forEach((l, i) => {
+    if (budget <= 0) return;
+    const t = l.slice(0, budget); budget -= l.length;
+    ctx.fillStyle = l.startsWith('+') ? '#5ee0c4' : l.startsWith('-') ? '#ff7a7a' : l.startsWith('#') || l.startsWith('//') ? '#5d6b84' : l.startsWith('✓') ? '#5ee0c4' : '#dfe6f0';
+    if (l.startsWith('@')) ctx.fillStyle = accent;
+    ctx.fillText(t, 14, 52 + i * 22);
+  });
+  if (progress < 1 && progress > 0) { ctx.fillStyle = accent; ctx.fillRect(14 + (lines.body[Math.min(lines.body.length - 1, Math.floor(progress * lines.body.length))]?.length ?? 0) * 9, 40 + Math.floor(progress * lines.body.length) * 22, 8, 16); }
+  tex.needsUpdate = true;
+}
+function holoPlane(w, h, tex, opacity = .92) {
+  const m = new THREE.Mesh(new THREE.PlaneGeometry(w, h), new THREE.MeshBasicMaterial({ map: tex, transparent: true, opacity, side: THREE.DoubleSide }));
+  const frame = new THREE.LineSegments(new THREE.EdgesGeometry(m.geometry), new THREE.LineBasicMaterial({ color: C.cyan, transparent: true, opacity: .55 }));
+  m.add(frame); return m;
+}
+
+/* ---------- the human (only warm object) ---------- */
+const human = new THREE.Group();
+human.position.set(0, 0, 0.35);
+// local -z is toward the desk
+// chair
+human.add(box(0.9, 0.12, 0.9, M.dark, 0, 0.85, 0.25));
+human.add(box(0.9, 1.0, 0.1, M.dark, 0, 1.35, 0.68));
+human.add(box(0.08, 0.85, 0.08, M.line, 0, 0.42, 0.25, false));
+human.add(box(0.7, 0.06, 0.7, M.line, 0, 0.03, 0.25, false));
+// legs (seated)
+for (const sx of [-1, 1]) {
+  human.add(box(0.26, 0.26, 0.72, M.amberDark, sx * 0.19, 1.02, -0.15)); // thigh
+  human.add(box(0.24, 0.8, 0.24, M.amberDark, sx * 0.19, 0.55, -0.5)); // shin
+  human.add(box(0.26, 0.12, 0.42, M.dark, sx * 0.19, 0.08, -0.6)); // shoe
+}
+// torso (hoodie)
+human.add(box(0.86, 0.95, 0.5, M.amber, 0, 1.6, 0.05));
+human.add(box(0.5, 0.2, 0.3, M.amber, 0, 2.1, 0.1)); // hood/collar
+// arms reaching to keyboard
+for (const sx of [-1, 1]) {
+  const up = box(0.22, 0.55, 0.22, M.amber, sx * 0.56, 1.75, -0.05); up.rotation.x = -0.5; human.add(up);
+  const fore = box(0.2, 0.55, 0.2, M.amber, sx * 0.5, 1.4, -0.42); fore.rotation.x = -1.35; human.add(fore);
+  human.add(box(0.18, 0.1, 0.22, M.skin, sx * 0.48, 1.24, -0.7));
+}
+// head
+const head = new THREE.Mesh(new THREE.DodecahedronGeometry(0.34, 0), M.skin);
+head.position.set(0, 2.45, 0.05); head.castShadow = true; human.add(head);
+human.add(box(0.72, 0.16, 0.07, M.glass, 0, 2.48, -0.28, false)); // glasses
+human.add(box(0.62, 0.22, 0.6, M.dark, 0, 2.7, 0.06)); // hair
+// a subtle warm glow under him so he reads as the anchor
+const glowTex = (() => { const c = document.createElement('canvas'); c.width = c.height = 128; const g = c.getContext('2d'); const r = g.createRadialGradient(64, 64, 0, 64, 64, 64); r.addColorStop(0, 'rgba(255,255,255,1)'); r.addColorStop(1, 'rgba(255,255,255,0)'); g.fillStyle = r; g.fillRect(0, 0, 128, 128); return new THREE.CanvasTexture(c); })();
+const floorGlow = new THREE.Sprite(new THREE.SpriteMaterial({ map: glowTex, color: C.amber, transparent: true, opacity: .35, blending: THREE.AdditiveBlending, depthWrite: false }));
+floorGlow.scale.set(4.5, 1.2, 1); floorGlow.position.set(0, 0.2, 0.3); scene.add(floorGlow);
+scene.add(human);
+
+// desk + holo monitors
+const desk = new THREE.Group(); desk.position.set(0, 0, -0.85);
+desk.add(box(2.8, 0.08, 1.1, M.dark, 0, 1.05, 0));
+for (const [x, z] of [[-1.3, -0.45], [1.3, -0.45], [-1.3, 0.45], [1.3, 0.45]]) desk.add(box(0.06, 1.02, 0.06, M.line, x, 0.51, z, false));
+desk.add(box(1.1, 0.03, 0.36, M.line, 0, 1.1, 0.25, false)); // keyboard
+const mug = new THREE.Mesh(new THREE.CylinderGeometry(0.09, 0.08, 0.2, 10), M.ink); mug.position.set(0.95, 1.19, 0.25); mug.castShadow = true; desk.add(mug);
+const specScreen = screenTex(); const diffScreen = screenTex(512, 360);
+const monL = holoPlane(1.15, 0.72, specScreen.tex); monL.position.set(-0.62, 1.78, -0.32); monL.rotation.y = 0.18; desk.add(monL);
+const monR = holoPlane(1.15, 0.72, diffScreen.tex); monR.position.set(0.62, 1.78, -0.32); monR.rotation.y = -0.18; desk.add(monR);
+scene.add(desk);
+
+const SPEC_LINES = { title: 'spec.md', body: ['# Portfolio site', '', '- host: GitHub Pages via Actions', '- content: cv.json (JSON Resume)', '- export: cv.pdf on every release', '- homepage: one continuous 3D scene', '', '@ acceptance: pdf ≤ 2 pages, lighthouse ≥ 90'] };
+const DIFF_LINES = (rev) => ({ title: `PR #${41 + rev} · unit: web · rev ${rev}`, body: ['@ src/scene/Camera.ts', '- camera.lookAt(0, 0, 0)', '+ camera.lookAt(target)', rev > 1 ? '+ // rev2: ease target per phase' : '@ src/pdf/render.ts', rev > 1 ? '+ target.lerp(next, 0.08)' : '+ await page.pdf({ format: "A4" })', '', '✓ lint   ✓ unit 14/14   ✓ e2e 3/3', '', 'awaiting human review…'] });
+drawCode(specScreen, SPEC_LINES, 1, '#ff9f5a');
+drawCode(diffScreen, DIFF_LINES(1), 0);
+
+/* ---------- whiteboard (Inception) ---------- */
+const board = new THREE.Group(); board.position.set(-6.4, 0, -2.2); board.rotation.y = 0.85;
+board.add(box(3.4, 2.1, 0.08, M.dark, 0, 2.0, 0));
+for (const x of [-1.5, 1.5]) board.add(box(0.07, 2.0, 0.07, M.line, x, 1.0, 0, false));
+const boardTex = screenTex(680, 420);
+const boardPlane = new THREE.Mesh(new THREE.PlaneGeometry(3.2, 1.95), new THREE.MeshBasicMaterial({ map: boardTex.tex }));
+boardPlane.position.set(0, 2.0, 0.05); board.add(boardPlane);
+scene.add(board);
+function drawBoard(p) {
+  const { ctx, cv, tex } = boardTex;
+  ctx.fillStyle = '#0e131c'; ctx.fillRect(0, 0, cv.width, cv.height);
+  ctx.strokeStyle = '#1a2231'; ctx.lineWidth = 1;
+  for (let x = 0; x < cv.width; x += 34) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, cv.height); ctx.stroke(); }
+  for (let y = 0; y < cv.height; y += 34) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(cv.width, y); ctx.stroke(); }
+  ctx.font = '500 14px "IBM Plex Mono", monospace'; ctx.fillStyle = '#8a95a8'; ctx.fillText('design.md · C4 container view', 18, 28);
+  const boxes = [
+    { x: 40, y: 150, w: 170, h: 78, t: 'cv.json', s: 'single source', c: '#ff9f5a' },
+    { x: 260, y: 70, w: 180, h: 78, t: 'Astro site', s: 'gsap · three', c: '#a08cff' },
+    { x: 260, y: 240, w: 180, h: 78, t: 'PDF job', s: 'playwright', c: '#5ee0c4' },
+    { x: 490, y: 150, w: 170, h: 78, t: 'GitHub Actions', s: 'pages + release', c: '#6fd3ff' },
+  ];
+  const arrows = [[210, 189, 260, 109], [210, 189, 260, 279], [440, 109, 490, 189], [440, 279, 490, 189]];
+  const steps = boxes.length + arrows.length;
+  const done = p * steps;
+  boxes.forEach((b, i) => {
+    const q = Math.max(0, Math.min(1, done - i));
+    if (q <= 0) return;
+    ctx.strokeStyle = b.c; ctx.lineWidth = 2;
+    const per = (b.w + b.h) * 2 * q; // stroke perimeter progressively
+    ctx.beginPath(); ctx.moveTo(b.x, b.y);
+    let rem = per;
+    const segs = [[b.w, 0], [0, b.h], [-b.w, 0], [0, -b.h]]; let cx = b.x, cy = b.y;
+    for (const [dx, dy] of segs) { const len = Math.abs(dx) + Math.abs(dy); const k = Math.min(1, rem / len); cx += dx * k; cy += dy * k; ctx.lineTo(cx, cy); rem -= len * k; if (rem <= 0) break; }
+    ctx.stroke();
+    if (q >= 1) { ctx.fillStyle = '#e6ebf2'; ctx.font = '500 17px "Barlow Condensed", sans-serif'; ctx.fillText(b.t, b.x + 14, b.y + 34); ctx.fillStyle = '#8a95a8'; ctx.font = '12px "IBM Plex Mono", monospace'; ctx.fillText(b.s, b.x + 14, b.y + 58); }
+  });
+  arrows.forEach((a, i) => {
+    const q = Math.max(0, Math.min(1, done - boxes.length - i));
+    if (q <= 0) return;
+    ctx.strokeStyle = '#6fd3ff'; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.lineTo(a[0] + (a[2] - a[0]) * q, a[1] + (a[3] - a[1]) * q); ctx.stroke();
+  });
+  tex.needsUpdate = true;
+}
+drawBoard(0);
+
+/* ---------- builders' terminals (Construction) ---------- */
+const termA = screenTex(), termB = screenTex();
+const CODE_A = { title: 'unit web · src/scene/Scroll.ts', body: ['import gsap from "gsap"', 'import { ScrollTrigger } from "gsap/ScrollTrigger"', '', 'export const timeline = gsap.timeline({', '  scrollTrigger: { scrub: 0.8, pin: true }', '})', '', '✓ 9 tests passed'] };
+const CODE_B = { title: 'unit pdf · scripts/render-cv.ts', body: ['const cv = JSON.parse(read("cv.json"))', 'await page.goto(url + "/cv/print")', 'await page.emulateMedia({ media: "print" })', 'await page.pdf({ path: "dist/cv.pdf",', '  format: "A4", printBackground: true })', '', '✓ 5 tests passed · 2 pages · 184 KB'] };
+function terminal(tex, x, z, ry) {
+  const g = new THREE.Group(); g.position.set(x, 0, z); g.rotation.y = ry;
+  g.add(box(0.5, 1.1, 0.5, M.dark, 0, 0.55, 0));
+  const p = holoPlane(1.6, 1.0, tex); p.position.set(0, 1.85, 0); g.add(p);
+  scene.add(g); return g;
+}
+terminal(termA.tex, 5.2, 1.7, -0.75); terminal(termB.tex, 6.4, -1.4, -0.6);
+drawCode(termA, CODE_A, 0, '#5ee0c4'); drawCode(termB, CODE_B, 0, '#5ee0c4');
+
+/* ---------- launchpad (Operations) ---------- */
+const pad = new THREE.Group(); pad.position.set(-2, 0, 7);
+const padBase = new THREE.Mesh(new THREE.CylinderGeometry(1.5, 1.6, 0.25, 32), M.dark); padBase.position.y = 0.12; padBase.receiveShadow = true; pad.add(padBase);
+const padRing = new THREE.Mesh(new THREE.TorusGeometry(1.5, 0.03, 8, 64), new THREE.MeshBasicMaterial({ color: C.cyan })); padRing.rotation.x = Math.PI / 2; padRing.position.y = 0.26; pad.add(padRing);
+const crateTex = screenTex(256, 256);
+(() => { const { ctx, tex } = crateTex; ctx.fillStyle = '#ff9f5a'; ctx.fillRect(0, 0, 256, 256); ctx.fillStyle = '#0b0e14'; ctx.font = '600 44px "Barlow Condensed", sans-serif'; ctx.fillText('cv.pdf', 40, 120); ctx.font = '500 20px "IBM Plex Mono", monospace'; ctx.fillText('v1.4.0 · A4 · 2p', 40, 160); tex.needsUpdate = true; })();
+const crate = new THREE.Mesh(new THREE.BoxGeometry(0.9, 0.9, 0.9), new THREE.MeshStandardMaterial({ map: crateTex.tex, flatShading: true, roughness: .6 }));
+crate.castShadow = true; crate.position.y = -0.5; pad.add(crate);
+const beam = new THREE.Mesh(new THREE.CylinderGeometry(1.2, 1.4, 6, 32, 1, true), new THREE.MeshBasicMaterial({ color: C.cyan, transparent: true, opacity: 0, side: THREE.DoubleSide, depthWrite: false, blending: THREE.AdditiveBlending }));
+beam.position.y = 3.2; pad.add(beam);
+scene.add(pad);
+
+/* ---------- agents ---------- */
+const agentDefs = [
+  { id: 'planner', name: 'Planner', color: C.cyan, home: [-4.4, 2.3, -0.6] },
+  { id: 'arch', name: 'Architect', color: C.violet, home: [-5.6, 2.6, 1.4] },
+  { id: 'b1', name: 'Builder α', color: C.teal, home: [4.6, 2.5, 2.6] },
+  { id: 'b2', name: 'Builder β', color: C.teal, home: [6.2, 2.7, 0.2] },
+  { id: 'rev', name: 'Reviewer', color: C.cyan, home: [2.6, 3.1, 3.2] },
+  { id: 'ops', name: 'Ops', color: C.cyan, home: [-3.2, 2.6, 6.2] },
+];
+const agents = agentDefs.map((d, i) => {
+  const g = new THREE.Group();
+  const core = new THREE.Mesh(new THREE.IcosahedronGeometry(0.3, 0), new THREE.MeshStandardMaterial({ color: d.color, emissive: d.color, emissiveIntensity: .9, flatShading: true, roughness: .4 }));
+  core.castShadow = true; g.add(core);
+  const shell = new THREE.Mesh(new THREE.IcosahedronGeometry(0.46, 1), new THREE.MeshStandardMaterial({ color: 0x1c2331, flatShading: true, roughness: .9, transparent: true, opacity: .55, wireframe: true }));
+  g.add(shell);
+  const halo = new THREE.Mesh(new THREE.TorusGeometry(0.62, 0.02, 8, 48), new THREE.MeshBasicMaterial({ color: d.color, transparent: true, opacity: .7 }));
+  halo.rotation.x = Math.PI / 2.4; g.add(halo);
+  const glow = new THREE.Sprite(new THREE.SpriteMaterial({ map: glowTex, color: d.color, transparent: true, opacity: .45, blending: THREE.AdditiveBlending, depthWrite: false }));
+  glow.scale.set(2.2, 2.2, 1); g.add(glow);
+  g.position.fromArray(d.home);
+  scene.add(g);
+  return { ...d, g, core, halo, glow, homeV: new THREE.Vector3().fromArray(d.home), phase: i * 1.3 };
+});
+const A = Object.fromEntries(agents.map(a => [a.id, a]));
+
+/* ---------- spec card + paths ---------- */
+const specTex = screenTex(256, 160);
+(() => { const { ctx, tex } = specTex; ctx.fillStyle = '#ff9f5a'; ctx.fillRect(0, 0, 256, 160); ctx.fillStyle = '#0b0e14'; ctx.font = '600 34px "Barlow Condensed", sans-serif'; ctx.fillText('SPEC', 18, 46); ctx.font = '500 15px "IBM Plex Mono", monospace'; ['portfolio site', 'pdf export', 'json source'].forEach((l, i) => ctx.fillText('· ' + l, 18, 80 + i * 24)); tex.needsUpdate = true; })();
+const spec = new THREE.Mesh(new THREE.PlaneGeometry(0.72, 0.45), new THREE.MeshBasicMaterial({ map: specTex.tex, side: THREE.DoubleSide }));
+spec.scale.setScalar(0.001); scene.add(spec);
+const specGlow = new THREE.Sprite(new THREE.SpriteMaterial({ map: glowTex, color: C.amber, transparent: true, opacity: .5, blending: THREE.AdditiveBlending, depthWrite: false }));
+specGlow.scale.set(1.8, 1.8, 1); spec.add(specGlow);
+const specPath = new THREE.CatmullRomCurve3([
+  new THREE.Vector3(0.45, 1.55, -0.55), new THREE.Vector3(0.2, 2.9, -0.4), new THREE.Vector3(-2.4, 3.2, -1.2),
+  A.planner.homeV.clone().add(new THREE.Vector3(0.6, -0.1, 0.3)), A.arch.homeV.clone().add(new THREE.Vector3(0.5, -0.2, 0.5)),
+]);
+const pathLine = new THREE.Line(new THREE.BufferGeometry().setFromPoints(specPath.getPoints(80)), new THREE.LineDashedMaterial({ color: C.amber, dashSize: .18, gapSize: .12, transparent: true, opacity: .6 }));
+pathLine.computeLineDistances(); pathLine.geometry.setDrawRange(0, 0); scene.add(pathLine);
+
+// design beams: architect -> builders
+const beams = ['b1', 'b2'].map(id => {
+  const pts = new THREE.CatmullRomCurve3([A.arch.homeV.clone(), new THREE.Vector3(0, 4.6, 0.5), A[id].homeV.clone()]).getPoints(60);
+  const l = new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), new THREE.LineBasicMaterial({ color: C.violet, transparent: true, opacity: .7 }));
+  l.geometry.setDrawRange(0, 0); scene.add(l); return l;
+});
+// review return lines: builders -> reviewer -> human
+const returns = ['b1', 'b2'].map(id => {
+  const pts = new THREE.CatmullRomCurve3([A[id].homeV.clone(), A.rev.homeV.clone(), new THREE.Vector3(0.6, 1.9, -1.1)]).getPoints(60);
+  const l = new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts), new THREE.LineBasicMaterial({ color: C.teal, transparent: true, opacity: .6 }));
+  l.geometry.setDrawRange(0, 0); scene.add(l); return l;
+});
+
+/* ---------- camera rail ---------- */
+const camKeys = [
+  { p: [0, 4.6, 13.5], l: [0, 1.6, 0] },
+  { p: [2.4, 2.5, 3.4], l: [0, 1.8, -0.7] },
+  { p: [-2.6, 2.9, 4.4], l: [-5.4, 2.0, -1.6] },
+  { p: [2.4, 2.8, 5.8], l: [5.6, 1.8, 0.4] },
+  { p: [0.3, 3.1, 6.4], l: [0, 1.9, -0.2] },
+  { p: [3.2, 3.4, 12.2], l: [-2, 1.4, 7] },
+];
+const camPos = new THREE.CatmullRomCurve3(camKeys.map(k => new THREE.Vector3(...k.p)), false, 'catmullrom', 0.35);
+const camLook = new THREE.CatmullRomCurve3(camKeys.map(k => new THREE.Vector3(...k.l)), false, 'catmullrom', 0.35);
+
+/* ---------- state driven by scroll ---------- */
+const S = { t: 0, specVis: 0, specP: 0, boardP: 0, beamP: 0, typeP: 0, retP: 0, converge: 0, diffP: 0, crateP: 0, rev: 1 };
+gsap.registerPlugin(ScrollTrigger);
+const tl = gsap.timeline({ scrollTrigger: { trigger: '#scroll', start: 'top top', end: 'bottom bottom', scrub: reduced ? true : 0.9 } });
+tl.to(S, { t: 5, duration: 5, ease: 'none' }, 0)
+  .to(S, { specVis: 1, duration: .35, ease: 'power2.out' }, 0.75)
+  .to(S, { specP: 1, duration: 1.15, ease: 'power1.inOut' }, 1.15)
+  .to(S, { boardP: 1, duration: .9, ease: 'none' }, 1.95)
+  .to(S, { beamP: 1, duration: .45, ease: 'power1.inOut' }, 2.85)
+  .to(S, { typeP: 1, duration: .75, ease: 'none' }, 3.05)
+  .to(S, { retP: 1, duration: .4, ease: 'power1.inOut' }, 3.6)
+  .to(S, { converge: 1, duration: .45, ease: 'power2.inOut' }, 3.85)
+  .to(S, { diffP: 1, duration: .5, ease: 'none' }, 4.15)
+  .to(S, { converge: 0, duration: .4, ease: 'power2.inOut' }, 4.85)
+  .to(S, { crateP: 1, duration: .75, ease: 'power2.out' }, 5.15);
+
+/* ---------- HUD wiring ---------- */
+const slides = [...document.querySelectorAll('.slide')];
+const steps = [...document.querySelectorAll('.rail .steps span')];
+const phases = [...document.querySelectorAll('.rail .phase')];
+const railFill = document.getElementById('railFill');
+const hint = document.getElementById('hint');
+const gate = document.getElementById('gate'), ship = document.getElementById('ship'), toast = document.getElementById('toast');
+const leaders = document.getElementById('leaders');
+const notes = [
+  { el: 'n-spec', anchor: () => spec.position, off: [40, -60], from: .8, to: 2.35 },
+  { el: 'n-planner', anchor: () => A.planner.g.position, off: [-210, -70], from: 1.9, to: 2.9 },
+  { el: 'n-arch', anchor: () => A.arch.g.position, off: [40, -80], from: 2.2, to: 3.0 },
+  { el: 'n-b1', anchor: () => A.b1.g.position, off: [-220, 40], from: 3.0, to: 3.85 },
+  { el: 'n-b2', anchor: () => A.b2.g.position, off: [30, -70], from: 3.0, to: 3.85 },
+  { el: 'n-rev', anchor: () => A.rev.g.position, off: [30, -70], from: 3.6, to: 4.8 },
+  { el: 'n-me', anchor: () => new THREE.Vector3(0, 2.9, 0.3), off: [-230, -50], from: 4.05, to: 4.85 },
+  { el: 'n-ops', anchor: () => A.ops.g.position, off: [-200, -70], from: 5.15, to: 6 },
+  { el: 'n-crate', anchor: () => new THREE.Vector3(-2, 1.9, 7), off: [40, -50], from: 5.45, to: 6 },
+].map(n => ({ ...n, el: document.getElementById(n.el), line: (() => { const l = document.createElementNS('http://www.w3.org/2000/svg', 'line'); l.setAttribute('stroke', '#3a4a63'); l.setAttribute('stroke-width', '1'); l.setAttribute('opacity', '0'); leaders.appendChild(l); return l; })() }));
+
+let lastSlide = -1, lastStep = -1, lastBoard = -1, lastType = -1, lastDiff = -1;
+function updateHUD(t) {
+  const idx = Math.min(5, Math.max(0, Math.round(t)));
+  if (idx !== lastSlide) { slides.forEach(s => s.classList.toggle('on', +s.dataset.t === idx)); lastSlide = idx; }
+  const stepIdx = Math.min(5, Math.floor(t + 0.5));
+  if (stepIdx !== lastStep) {
+    steps.forEach(s => { const k = +s.dataset.step; s.classList.toggle('on', k === stepIdx); s.classList.toggle('done', k < stepIdx); });
+    phases.forEach((p, i) => p.classList.toggle('on', i === (stepIdx <= 2 ? 0 : stepIdx <= 4 ? 1 : 2)));
+    lastStep = stepIdx;
+  }
+  railFill.style.height = `${(t / 5) * 100}%`;
+  hint.style.opacity = t < 0.15 ? 1 : 0;
+  gate.classList.toggle('on', t > 4.15 && t < 4.75);
+  ship.classList.toggle('on', t > 5.4);
+}
+
+/* ---------- interactions ---------- */
+let toastTimer;
+function say(msg, ms = 2200) { toast.textContent = msg; toast.classList.add('on'); clearTimeout(toastTimer); toastTimer = setTimeout(() => toast.classList.remove('on'), ms); }
+document.getElementById('btnReject').addEventListener('click', () => {
+  S.rev += 1; say('Rejected. Agents iterating on the diff…');
+  agents.forEach(a => gsap.fromTo(a.core.material, { emissiveIntensity: 2.2 }, { emissiveIntensity: .9, duration: 1.2, ease: 'power2.out' }));
+  gsap.fromTo(S, { diffP: 0 }, { diffP: 1, duration: 1.6, delay: .6, ease: 'none', onStart: () => (lastDiff = -1), onComplete: () => say(`Revision ${S.rev} ready for your review.`) });
+});
+document.getElementById('btnApprove').addEventListener('click', () => {
+  say('Approved. Handing to Ops…');
+  const target = document.getElementById('scroll').offsetHeight - innerHeight;
+  const start = scrollY, dur = reduced ? 0 : 1600, t0 = performance.now();
+  (function step(now) { const k = Math.min(1, (now - t0) / (dur || 1)); const e = 1 - Math.pow(1 - k, 3); scrollTo(0, start + (target - start) * e); if (k < 1) requestAnimationFrame(step); })(t0);
+});
+document.getElementById('btnPdf').addEventListener('click', () => say('Prototype: in production this links to the cv.pdf release asset.', 3200));
+
+// redraw static textures once web fonts are in
+document.fonts?.ready.then(() => { drawCode(specScreen, SPEC_LINES, 1, '#ff9f5a'); lastBoard = lastType = lastDiff = -1; });
+
+/* ---------- resize / loop ---------- */
+function resize() {
+  const w = innerWidth, h = innerHeight;
+  renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix();
+  leaders.setAttribute('viewBox', `0 0 ${w} ${h}`);
+}
+addEventListener('resize', resize); resize();
+
+const tmp = new THREE.Vector3(), tmp2 = new THREE.Vector3(), ringPos = new THREE.Vector3();
+const clock = new THREE.Clock();
+function frame() {
+  const time = clock.getElapsedTime();
+  const t = S.t;
+  const u = Math.min(1, Math.max(0, t / 5));
+  camera.position.copy(camPos.getPoint(u));
+  camera.lookAt(camLook.getPoint(u));
+  if (!reduced) { camera.position.y += Math.sin(time * .6) * 0.03; }
+
+  // human: subtle typing / breathing
+  if (!reduced) { human.position.y = Math.sin(time * 1.4) * 0.012; head.rotation.y = Math.sin(time * .5) * 0.08 + (t > 3.9 && t < 4.9 ? 0.25 : 0); }
+
+  // spec card along its path
+  spec.scale.setScalar(Math.max(0.001, S.specVis) * (1 - Math.max(0, S.specP - 0.92) / 0.08));
+  spec.position.copy(specPath.getPoint(S.specP));
+  spec.lookAt(camera.position);
+  pathLine.geometry.setDrawRange(0, Math.floor(S.specP * 80) + (S.specVis > .5 ? 1 : 0));
+  pathLine.material.opacity = .6 * (1 - Math.max(0, t - 2.4));
+
+  // whiteboard draws
+  const b = Math.round(S.boardP * 60); if (b !== lastBoard) { drawBoard(S.boardP); lastBoard = b; }
+  // beams + typing + returns
+  beams.forEach(l => l.geometry.setDrawRange(0, Math.floor(S.beamP * 60)));
+  const ty = Math.round(S.typeP * 80); if (ty !== lastType) { drawCode(termA, CODE_A, S.typeP, '#5ee0c4'); drawCode(termB, CODE_B, Math.max(0, S.typeP * 1.15 - 0.1), '#5ee0c4'); lastType = ty; }
+  returns.forEach(l => l.geometry.setDrawRange(0, Math.floor(S.retP * 60)));
+  beams.forEach(l => (l.material.opacity = .7 * (1 - Math.max(0, t - 3.8))));
+  returns.forEach(l => (l.material.opacity = .6 * (1 - Math.max(0, t - 4.4))));
+  const df = Math.round(S.diffP * 60); if (df !== lastDiff) { drawCode(diffScreen, DIFF_LINES(S.rev), S.diffP, '#6fd3ff'); lastDiff = df; }
+
+  // agents: hover at home, converge to a ring around the human during review
+  agents.forEach((a, i) => {
+    const ang = (i / agents.length) * Math.PI * 2 + time * 0.15;
+    ringPos.set(Math.cos(ang) * 2.4, 2.7 + Math.sin(time + i) * 0.05, Math.sin(ang) * 2.4 + 0.3);
+    tmp.copy(a.homeV).lerp(ringPos, S.converge);
+    if (!reduced) tmp.y += Math.sin(time * 1.3 + a.phase) * 0.12;
+    a.g.position.lerp(tmp, 0.12);
+    a.core.rotation.y += 0.01; a.core.rotation.x += 0.004;
+    a.halo.rotation.z += 0.012;
+    // activity glow by phase
+    let act = 0.35;
+    if (a.id === 'planner' && t > 1.4 && t < 2.6) act = 1;
+    if (a.id === 'arch' && t > 1.9 && t < 3.1) act = 1;
+    if ((a.id === 'b1' || a.id === 'b2') && t > 2.9 && t < 3.9) act = 1;
+    if (a.id === 'rev' && t > 3.6 && t < 4.9) act = 1;
+    if (a.id === 'ops' && t > 4.9) act = 1;
+    a.glow.material.opacity += (act * 0.55 - a.glow.material.opacity) * 0.08;
+    a.core.material.emissiveIntensity += (0.6 + act * 0.9 - a.core.material.emissiveIntensity) * 0.08;
+  });
+
+  // launchpad
+  crate.position.y = -0.5 + S.crateP * 1.7; crate.rotation.y = S.crateP * Math.PI * 0.5 + (reduced ? 0 : time * 0.2 * S.crateP);
+  beam.material.opacity = S.crateP * 0.12 * (0.8 + Math.sin(time * 2) * 0.2);
+  padRing.material.color.setHex(S.crateP > .5 ? C.amber : C.cyan);
+
+  // HUD
+  updateHUD(t);
+  const w = innerWidth, h = innerHeight;
+  notes.forEach(n => {
+    tmp2.copy(n.anchor()).project(camera);
+    const x = (tmp2.x * 0.5 + 0.5) * w, y = (-tmp2.y * 0.5 + 0.5) * h;
+    const visible = tmp2.z < 1 && x > -40 && x < w + 40 && y > 0 && y < h;
+    const on = t >= n.from && t <= n.to && visible;
+    n.el.classList.toggle('on', on); n.line.setAttribute('opacity', on ? '0.8' : '0');
+    if (!on) return;
+    let ox = n.off[0], oy = n.off[1];
+    if (w < 640) { ox = ox < 0 ? -140 : 20; oy = oy < 0 ? -40 : 20; }
+    const lx = Math.max(12, Math.min(w - 220, x + ox)), ly = Math.max(60, Math.min(h - 120, y + oy));
+    n.el.style.transform = `translate(${lx}px, ${ly}px)`;
+    n.line.setAttribute('x1', x); n.line.setAttribute('y1', y); n.line.setAttribute('x2', lx + (ox < 0 ? n.el.offsetWidth : 0)); n.line.setAttribute('y2', ly + n.el.offsetHeight / 2);
+  });
+
+  renderer.render(scene, camera);
+  requestAnimationFrame(frame);
+}
+frame();
+</script>
+<div id="scroll" aria-hidden="true"></div>

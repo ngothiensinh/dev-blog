@@ -1,9 +1,9 @@
 import Link from '@/components/Link';
 import Tag from '@/components/Tag';
-import siteMetadata from '../../data/siteMetadata';
+import siteMetadata from '@/../data/siteMetadata';
 import { formatDate } from 'pliny/utils/formatDate';
 import NewsletterForm from 'pliny/ui/NewsletterForm';
-import { getPosts } from '../../data/lib/dataLayer';
+import { getPosts } from '@/../data/lib/dataLayer';
 
 const MAX_DISPLAY = 5;
 

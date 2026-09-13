@@ -3,7 +3,7 @@ const headerNavLinks = [
   { href: '/blog/pages/1', title: 'Posts' },
   // { href: '/tags', title: 'Tags' },
   // { href: '/projects', title: 'Projects' },
-  { href: '/about', title: 'About' },
+  { href: '/profile', title: 'Profile' },
 ];
 
 export default headerNavLinks;
