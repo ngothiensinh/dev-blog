@@ -5,9 +5,26 @@
   "rail": {
     "label": "Lifecycle phases",
     "phases": [
-      { "name": "Inception", "steps": ["intent", "design"] },
-      { "name": "Construction", "steps": ["build", "review"] },
-      { "name": "Operations", "steps": ["ship"] }
+      {
+        "name": "Inception",
+        "steps": [
+          "intent",
+          "design"
+        ]
+      },
+      {
+        "name": "Construction",
+        "steps": [
+          "build",
+          "review"
+        ]
+      },
+      {
+        "name": "Operations",
+        "steps": [
+          "ship"
+        ]
+      }
     ]
   },
   "hint": "scroll",
@@ -34,15 +51,70 @@
     }
   ],
   "notes": [
-    { "id": "spec", "tone": "warm", "label": "spec.md", "text": "portfolio site · PDF export · JSON source", "sub": "author: me", "short": "spec.md · by me" },
-    { "id": "planner", "tone": "cyan", "label": "Planner", "text": "3 user stories · 2 units", "short": "3 stories · 2 units" },
-    { "id": "arch", "tone": "violet", "label": "Architect", "text": "design.md · C4 · risks", "short": "design.md · C4" },
-    { "id": "b1", "tone": "teal", "label": "Builder α", "text": "unit: web · next + gsap", "short": "unit: web" },
-    { "id": "b2", "tone": "teal", "label": "Builder β", "text": "unit: pdf · playwright", "short": "unit: pdf" },
-    { "id": "rev", "tone": "cyan", "label": "Reviewer", "text": "lint · tests 14/14 · diff ready", "short": "tests 14/14" },
-    { "id": "me", "tone": "warm", "label": "Human gate", "text": "final say on every merge", "short": "final say" },
-    { "id": "ops", "tone": "cyan", "label": "Ops", "text": "github actions · pages · release", "short": "actions · pages" },
-    { "id": "crate", "tone": "warm", "label": "artifact", "text": "cv.pdf · v2.0.0", "short": "cv.pdf" }
+    {
+      "id": "spec",
+      "tone": "warm",
+      "label": "spec.md",
+      "text": "portfolio site · PDF export · JSON source",
+      "sub": "author: me",
+      "short": "spec.md · by me"
+    },
+    {
+      "id": "planner",
+      "tone": "cyan",
+      "label": "Planner",
+      "text": "3 user stories · 2 units",
+      "short": "3 stories · 2 units"
+    },
+    {
+      "id": "arch",
+      "tone": "violet",
+      "label": "Architect",
+      "text": "design.md · C4 · risks",
+      "short": "design.md · C4"
+    },
+    {
+      "id": "b1",
+      "tone": "teal",
+      "label": "Builder α",
+      "text": "unit: web · next + gsap",
+      "short": "unit: web"
+    },
+    {
+      "id": "b2",
+      "tone": "teal",
+      "label": "Builder β",
+      "text": "unit: pdf · playwright",
+      "short": "unit: pdf"
+    },
+    {
+      "id": "rev",
+      "tone": "cyan",
+      "label": "Reviewer",
+      "text": "lint · tests 14/14 · diff ready",
+      "short": "tests 14/14"
+    },
+    {
+      "id": "me",
+      "tone": "warm",
+      "label": "Human gate",
+      "text": "final say on every merge",
+      "short": "final say"
+    },
+    {
+      "id": "ops",
+      "tone": "cyan",
+      "label": "Ops",
+      "text": "github actions · pages · release",
+      "short": "actions · pages"
+    },
+    {
+      "id": "crate",
+      "tone": "warm",
+      "label": "artifact",
+      "text": "cv.pdf · v2.0.0",
+      "short": "cv.pdf"
+    }
   ],
   "gate": {
     "reject": "Reject · iterate",
@@ -66,11 +138,19 @@
         "- /profile: one continuous 3D scene",
         "",
         "@ acceptance: pdf ≤ 2 pages, lighthouse ≥ 90"
+      ],
+      "tail": [
+        "",
+        "✓ spec.md saved · handed to Planner"
       ]
     },
     "specCard": {
       "title": "SPEC",
-      "lines": ["portfolio page", "pdf export", "json source"]
+      "lines": [
+        "portfolio page",
+        "pdf export",
+        "json source"
+      ]
     },
     "diff": {
       "title": "PR #{pr} · unit: web · rev {rev}",
@@ -102,10 +182,26 @@
     "board": {
       "title": "design.md · C4 container view",
       "boxes": [
-        { "title": "cv.json", "sub": "single source", "tone": "amber" },
-        { "title": "Next.js site", "sub": "three · gsap", "tone": "violet" },
-        { "title": "PDF job", "sub": "playwright", "tone": "teal" },
-        { "title": "GitHub Actions", "sub": "pages + release", "tone": "cyan" }
+        {
+          "title": "cv.json",
+          "sub": "single source",
+          "tone": "amber"
+        },
+        {
+          "title": "Next.js site",
+          "sub": "three · gsap",
+          "tone": "violet"
+        },
+        {
+          "title": "PDF job",
+          "sub": "playwright",
+          "tone": "teal"
+        },
+        {
+          "title": "GitHub Actions",
+          "sub": "pages + release",
+          "tone": "cyan"
+        }
       ]
     },
     "termA": {
@@ -136,14 +232,59 @@
     "crate": {
       "title": "cv.pdf",
       "sub": "v2.0.0 · A4 · 2p"
+    },
+    "terminal": {
+      "title": "me@desk · agent log",
+      "body": [
+        "$ aidlc run --spec spec.md",
+        "planner    · reading spec.md",
+        "planner    · 3 user stories · 2 units",
+        "architect  · drafting design.md",
+        "architect  · C4 container view done",
+        "builder α  · branch unit/web",
+        "builder α  · next build ok · 9 tests ok",
+        "builder β  · branch unit/pdf",
+        "builder β  · playwright pdf ok · 5 tests ok",
+        "reviewer   · lint ok · unit 14/14 · e2e 3/3",
+        "reviewer   · PR #41 ready · waiting for human",
+        "ops        · pages deploy queued",
+        "$ git log --oneline -1",
+        "c802d7e feat(profile): one architect, n agents",
+        "$ "
+      ]
     }
   },
   "sections": [
-    { "id": "experience", "num": "01", "eyebrow": "Experience", "title": "Business systems, <em>end to end</em>." },
-    { "id": "certifications", "num": "02", "eyebrow": "Certifications", "title": "Certified on <em>Azure</em>, fundamentals to architect." },
-    { "id": "history", "num": "03", "eyebrow": "Work history · education", "title": "Where it <em>started</em>." },
-    { "id": "skills", "num": "04", "eyebrow": "Skills · platforms", "title": "What I <em>build with</em>." },
-    { "id": "contact", "num": "05", "eyebrow": "Contact · CV", "title": "Let's build <em>real value</em>." }
+    {
+      "id": "experience",
+      "num": "01",
+      "eyebrow": "Experience",
+      "title": "Business systems, <em>end to end</em>."
+    },
+    {
+      "id": "certifications",
+      "num": "02",
+      "eyebrow": "Certifications",
+      "title": "Certified on <em>Azure</em>, fundamentals to architect."
+    },
+    {
+      "id": "history",
+      "num": "03",
+      "eyebrow": "Work history · education",
+      "title": "Where it <em>started</em>."
+    },
+    {
+      "id": "skills",
+      "num": "04",
+      "eyebrow": "Skills · platforms",
+      "title": "What I <em>build with</em>."
+    },
+    {
+      "id": "contact",
+      "num": "05",
+      "eyebrow": "Contact · CV",
+      "title": "Let's build <em>real value</em>."
+    }
   ],
   "footer": {
     "line": "This site and cv.pdf are built from one cv.json by GitHub Actions.",

@@ -66,7 +66,7 @@ export function createScene({ canvas, track, content, refs, hud, reduced, fonts,
   const right = new THREE.Vector3();
   const up = new THREE.Vector3();
 
-  const last = { board: -1, type: -1, diff: -1 };
+  const last = { board: -1, type: -1 };
   let lastUi = { slide: -1, step: -1, gateOn: null, shipOn: null };
   let raf = 0;
   let running = false;
@@ -173,11 +173,7 @@ export function createScene({ canvas, track, content, refs, hud, reduced, fonts,
       l.geometry.setDrawRange(0, Math.floor(S.retP * 60));
       l.material.opacity = 0.6 * clamp01(1 - Math.max(0, t - 4.4));
     });
-    const df = Math.round(S.diffP * 60);
-    if (df !== last.diff) {
-      desk.drawDiff(S.diffP, S.rev);
-      last.diff = df;
-    }
+    desk.tick(time, S);
 
     // Ops guide: a point near the right edge of the parked view, sliding down with opsP
     if (park > 0) {
@@ -283,9 +279,7 @@ export function createScene({ canvas, track, content, refs, hud, reduced, fonts,
         duration: 1.6,
         delay: 0.6,
         ease: 'none',
-        onStart: () => {
-          last.diff = -1;
-        },
+        onStart: () => desk.invalidate(),
         onComplete: () => onToast(hud.gate.toastRevision.replace('{rev}', String(S.rev))),
       }
     );
@@ -310,11 +304,14 @@ export function createScene({ canvas, track, content, refs, hud, reduced, fonts,
   /* ---------- fonts: redraw static textures once web fonts are in ---------- */
   const redrawStatic = () => {
     if (disposed) return;
-    desk.drawSpec();
+    desk.invalidate();
     pad.redraw();
     paths.redraw();
-    last.board = last.type = last.diff = -1;
-    if (reduced) renderStatic();
+    last.board = last.type = -1;
+    if (reduced) {
+      desk.drawStatic();
+      renderStatic();
+    }
   };
   if (document.fonts) {
     Promise.all([

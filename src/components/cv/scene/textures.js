@@ -14,7 +14,7 @@ export function screenTex(w = 512, h = 320) {
 }
 
 const lineColor = (l, accent) => {
-  if (l.startsWith('@')) return accent;
+  if (l.startsWith('@') || l.startsWith('$')) return accent;
   if (l.startsWith('+') || l.startsWith('✓')) return HEX.teal;
   if (l.startsWith('-')) return HEX.removed;
   if (l.startsWith('#') || l.startsWith('//')) return HEX.comment;
@@ -184,5 +184,62 @@ export function drawSpecCard(s, content, fonts) {
   ctx.fillText(content.title, 18, 46);
   ctx.font = `500 15px ${fonts.mono}`;
   content.lines.forEach((l, i) => ctx.fillText(`· ${l}`, 18, 80 + i * 24));
+  tex.needsUpdate = true;
+}
+
+// Time-based typewriter over `body`: types line by line at `cps`, pauses per line, holds at the end,
+// then loops. sample(time) returns the visible rows (last `rows`), cursor position and a change key.
+export function typewriter({ body, cps = 30, linePause = 0.35, holdEnd = 2.5, rows = 11 }) {
+  const segs = body.map((text) => ({
+    text,
+    dur: Math.max(0.2, text.length / cps) + (text === '' ? 0.15 : linePause),
+  }));
+  const cycle = segs.reduce((a, s) => a + s.dur, 0) + holdEnd;
+  return function sample(time) {
+    const t = time % cycle;
+    let acc = 0;
+    let idx = segs.length;
+    let chars = 0;
+    for (let i = 0; i < segs.length; i += 1) {
+      if (t < acc + segs[i].dur) {
+        idx = i;
+        chars = Math.min(segs[i].text.length, Math.floor((t - acc) * cps));
+        break;
+      }
+      acc += segs[i].dur;
+    }
+    const done = idx === segs.length;
+    const lines = done ? body : [...body.slice(0, idx), body[idx].slice(0, chars)];
+    const view = lines.slice(Math.max(0, lines.length - rows));
+    const blink = Math.floor(time * 2.4) % 2 === 0;
+    return {
+      view,
+      cursorRow: view.length - 1,
+      cursorCol: view[view.length - 1]?.length ?? 0,
+      blink,
+      key: `${idx}:${chars}:${blink ? 1 : 0}`,
+    };
+  };
+}
+
+// Draws a typewriter sample as a terminal: title bar, rows, block cursor at the end of the last row.
+export function drawTerminal(s, title, { view, cursorRow, cursorCol, blink }, accent, fonts) {
+  const { ctx, cv, tex } = s;
+  ctx.fillStyle = HEX.screen;
+  ctx.fillRect(0, 0, cv.width, cv.height);
+  ctx.fillStyle = HEX.screenBar;
+  ctx.fillRect(0, 0, cv.width, 26);
+  ctx.font = `500 13px ${fonts.mono}`;
+  ctx.fillStyle = HEX.muted;
+  ctx.fillText(title, 12, 18);
+  ctx.font = `15px ${fonts.mono}`;
+  view.forEach((l, i) => {
+    ctx.fillStyle = lineColor(l, accent);
+    ctx.fillText(l, 14, 52 + i * 22);
+  });
+  if (blink && cursorRow >= 0) {
+    ctx.fillStyle = accent;
+    ctx.fillRect(14 + cursorCol * 9, 40 + cursorRow * 22, 8, 16);
+  }
   tex.needsUpdate = true;
 }

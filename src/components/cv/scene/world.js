@@ -20,6 +20,10 @@ export function createMaterials() {
     amberDark: mat(0xb8642c),
     skin: mat(0xffc9a0, { roughness: 0.7 }),
     glass: mat(C.dark, { roughness: 0.3, metalness: 0.4 }),
+    fabric: mat(0x141a25, { roughness: 0.95 }),
+    fabricDouble: mat(0x141a25, { roughness: 0.95, side: THREE.DoubleSide }),
+    metal: mat(0x4a5a74, { metalness: 0.55, roughness: 0.35 }),
+    leaf: mat(0x2f8f7a, { roughness: 0.8 }),
   };
 }
 
