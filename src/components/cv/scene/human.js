@@ -30,15 +30,20 @@ function createChair(M) {
   }
   chair.add(place(new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.06, 0.75, 10), M.metal), 0, 0.45, 0, false));
   chair.add(place(new THREE.Mesh(new THREE.CylinderGeometry(0.5, 0.42, 0.16, 20), M.fabric), 0, 0.86, 0));
-  // backrest: open cylinder segment wrapping behind the sitter, leaning back a touch
-  const back = new THREE.Mesh(
-    new THREE.CylinderGeometry(0.5, 0.46, 1.1, 14, 1, true, -0.75, 1.5),
-    M.fabricDouble
-  );
-  place(back, 0, 1.5, 0);
-  back.rotation.x = 0.1;
+  // backrest: solid rounded slab with a slight recline; lumbar bar, post and headrest ride on it
+  const recline = 0.12;
+  const back = rbox(0.92, 1.05, 0.12, M.fabric, 0, 1.48, 0.42, 0.05);
+  back.rotation.x = recline;
   chair.add(back);
-  chair.add(rbox(0.46, 0.2, 0.1, M.fabric, 0, 2.18, 0.56, 0.04));
+  const lumbar = rbox(0.7, 0.16, 0.05, M.dark, 0, 1.12, 0.35, 0.02);
+  lumbar.rotation.x = recline;
+  chair.add(lumbar);
+  const post = box(0.06, 0.2, 0.05, M.metal, 0, 2.1, 0.49, false);
+  post.rotation.x = recline;
+  chair.add(post);
+  const headrest = rbox(0.46, 0.2, 0.1, M.fabric, 0, 2.26, 0.52, 0.04);
+  headrest.rotation.x = recline;
+  chair.add(headrest);
   for (const sx of [-1, 1]) {
     chair.add(box(0.06, 0.32, 0.06, M.metal, sx * 0.52, 1.05, 0.05, false));
     chair.add(rbox(0.1, 0.05, 0.42, M.dark, sx * 0.52, 1.23, 0, 0.02));
@@ -60,13 +65,13 @@ function createFigure(M) {
   const torso = capsule(0.36, 0.5, M.amber, 0, 1.62, 0.08);
   torso.scale.set(1.15, 1, 0.8);
   fig.add(torso);
-  const hood = new THREE.Mesh(
-    new THREE.SphereGeometry(0.26, 10, 6, 0, Math.PI * 2, 0, Math.PI / 2),
-    M.amber
-  );
-  place(hood, 0, 2.02, 0.3);
-  hood.rotation.x = -0.9;
+  const hood = place(new THREE.Mesh(new THREE.SphereGeometry(0.24, 10, 7), M.amber), 0, 2.02, 0.28);
+  hood.scale.set(1.15, 0.7, 0.85);
   fig.add(hood);
+  const collar = new THREE.Mesh(new THREE.TorusGeometry(0.19, 0.06, 8, 16), M.amber);
+  collar.rotation.x = Math.PI / 2;
+  place(collar, 0, 2.08, 0.06);
+  fig.add(collar);
   fig.add(box(0.03, 0.55, 0.02, M.amberDark, 0, 1.6, -0.22, false)); // zip
   for (const sx of [-1, 1]) {
     const upper = capsule(0.1, 0.42, M.amber, sx * 0.5, 1.68, -0.1);

@@ -1,8 +1,10 @@
 import Link from '@/components/Link';
 import { formatRange, isCurrent } from '@/lib/cv';
+import ScrollTrack from '../ScrollTrack';
 
 export default function Experience({ work }) {
   return (
+    <ScrollTrack>
     <ol className='tl'>
       {work.map((w, i) => {
         const current = isCurrent(w);
@@ -10,6 +12,7 @@ export default function Experience({ work }) {
           <li
             key={`${w.name}-${w.position}-${i}`}
             className={`tl-item${current ? ' current' : ''}`}
+            data-step
           >
             <div className='tl-meta'>
               <span className={current ? 'now' : undefined}>
@@ -35,5 +38,6 @@ export default function Experience({ work }) {
         );
       })}
     </ol>
+    </ScrollTrack>
   );
 }

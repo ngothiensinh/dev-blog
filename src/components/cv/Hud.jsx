@@ -1,8 +1,5 @@
 import RichText from './RichText';
 
-// Phase index for the rail, mirroring the prototype: steps 1-2 Inception, 3-4 Construction, 5 Operations.
-const phaseFor = (step) => (step <= 2 ? 0 : step <= 4 ? 1 : 2);
-
 export default function Hud({
   hud,
   basics,
@@ -13,9 +10,7 @@ export default function Hud({
   onApprove,
   onReject,
 }) {
-  const { slide, step, gateOn, shipOn } = ui;
-  const activePhase = phaseFor(step);
-  let stepNo = 0;
+  const { slide, gateOn, shipOn } = ui;
 
   return (
     <div className='hud'>
@@ -35,26 +30,6 @@ export default function Hud({
         <strong>{basics.name}</strong>
         {hud.corner.role}
       </div>
-
-      <nav className='rail' aria-label={hud.rail.label}>
-        <div className='fill' ref={(el) => (refs.railFill = el)} />
-        {hud.rail.phases.map((p, pi) => (
-          <div key={p.name} className={`phase${activePhase === pi ? ' on' : ''}`}>
-            <span>{p.name}</span>
-            <div className='steps'>
-              {p.steps.map((s) => {
-                stepNo += 1;
-                const k = stepNo;
-                return (
-                  <span key={s} className={k === step ? 'on' : k < step ? 'done' : ''}>
-                    {s}
-                  </span>
-                );
-              })}
-            </div>
-          </div>
-        ))}
-      </nav>
 
       <div className='head'>
         {hud.slides.map((s, i) => (

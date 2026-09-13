@@ -1,53 +1,28 @@
 {
   "corner": {
-    "role": "developer · architect · Vietnam"
-  },
-  "rail": {
-    "label": "Lifecycle phases",
-    "phases": [
-      {
-        "name": "Inception",
-        "steps": [
-          "intent",
-          "design"
-        ]
-      },
-      {
-        "name": "Construction",
-        "steps": [
-          "build",
-          "review"
-        ]
-      },
-      {
-        "name": "Operations",
-        "steps": [
-          "ship"
-        ]
-      }
-    ]
+    "role": "software architect · Da Nang, Vietnam"
   },
   "hint": "scroll",
   "slides": [
     {
-      "eyebrow": "Ngo Thien Sinh · developer · architect",
-      "title": "One architect.<br>N agents.<br><em>Every decision still mine.</em>",
-      "body": "Scroll to hand a spec to the agents and follow it through design, build, review and ship."
+      "eyebrow": "Ngo Thien Sinh · software architect",
+      "title": "Your idea in.<br><em>Working software</em> out.",
+      "body": "I run delivery as a loop — plan, design, build, test, deploy, maintain — with AI agents doing the hands-on work and me above the loop: instigating, directing, governing. Scroll to watch one idea go round."
     },
     {
-      "eyebrow": "01 · work",
-      "title": "Agents draft, build and test. <em>I direct.</em>",
-      "body": "Planner turns the spec into stories, Architect draws the C4, Builders work in parallel on their own branches — every unit ends on green tests."
+      "eyebrow": "01 · plan → design → build → test",
+      "title": "Agents do the hands-on work. <em>I direct it.</em>",
+      "body": "Your idea becomes a written spec. Agents plan it, draw the architecture, build the units in parallel and verify their own work — every step checked before it reaches me."
     },
     {
-      "eyebrow": "02 · review · human gate",
+      "eyebrow": "02 · the human gate",
       "title": "Nothing ships <em>without me.</em>",
-      "body": "The diff comes back to my desk. Approve, reject, or steer — the agents wait."
+      "body": "The agent that wrote the code can't approve it. Every change comes back to my desk: I approve, reject or steer — quality, security and cost stay my call."
     },
     {
-      "eyebrow": "03 · ship",
-      "title": "Shipped: <em>cv.pdf</em>",
-      "body": "Same cv.json renders this page and the PDF — built by GitHub Actions on every push."
+      "eyebrow": "03 · deploy → maintain",
+      "title": "Shipped. <em>And kept running.</em>",
+      "body": "One pipeline ships the product with its documents — this page and my CV included. After launch the loop keeps turning: monitor, fix, next idea."
     }
   ],
   "notes": [
@@ -55,72 +30,72 @@
       "id": "spec",
       "tone": "warm",
       "label": "spec.md",
-      "text": "portfolio site · PDF export · JSON source",
-      "sub": "author: me",
-      "short": "spec.md · by me"
+      "text": "your idea, written down · scope · acceptance",
+      "sub": "author: me, with you",
+      "short": "spec.md · your idea"
     },
     {
       "id": "planner",
       "tone": "cyan",
       "label": "Planner",
-      "text": "3 user stories · 2 units",
-      "short": "3 stories · 2 units"
+      "text": "plan · stories · units · plan.md",
+      "short": "plan"
     },
     {
       "id": "arch",
       "tone": "violet",
       "label": "Architect",
-      "text": "design.md · C4 · risks",
-      "short": "design.md · C4"
+      "text": "design · C4 · risks · trade-offs",
+      "short": "design"
     },
     {
       "id": "b1",
       "tone": "teal",
       "label": "Builder α",
-      "text": "unit: web · next + gsap",
-      "short": "unit: web"
+      "text": "build · unit: web · own branch",
+      "short": "build · web"
     },
     {
       "id": "b2",
       "tone": "teal",
       "label": "Builder β",
-      "text": "unit: pdf · playwright",
-      "short": "unit: pdf"
+      "text": "build · unit: pdf · own branch",
+      "short": "build · pdf"
     },
     {
       "id": "rev",
       "tone": "cyan",
       "label": "Reviewer",
-      "text": "lint · tests 14/14 · diff ready",
-      "short": "tests 14/14"
+      "text": "test · lint · 14/14 green · diff ready",
+      "short": "test · 14/14"
     },
     {
       "id": "me",
       "tone": "warm",
       "label": "Human gate",
-      "text": "final say on every merge",
-      "short": "final say"
+      "text": "approve · reject · steer",
+      "short": "human gate"
     },
     {
       "id": "ops",
       "tone": "cyan",
       "label": "Ops",
-      "text": "github actions · pages · release",
-      "short": "actions · pages"
+      "text": "deploy · one pipeline · monitor",
+      "short": "deploy"
     },
     {
       "id": "crate",
       "tone": "warm",
       "label": "artifact",
-      "text": "cv.pdf · v2.0.0",
+      "text": "cv.pdf · shipped · v2.0.0",
       "short": "cv.pdf"
     }
   ],
   "gate": {
     "reject": "Reject · iterate",
-    "approve": "Approve merge",
-    "toastReject": "Rejected. Agents iterating on the diff…",
-    "toastRevision": "Revision {rev} ready for your review.",
+    "approve": "Approve · ship",
+    "toastReject": "Rejected. Agents iterating on the change…",
+    "toastRevision": "Revision {rev} is back at your desk.",
     "toastApprove": "Approved. Handing to Ops…"
   },
   "ship": {
@@ -130,26 +105,27 @@
     "spec": {
       "title": "spec.md",
       "body": [
-        "# Portfolio page",
+        "# Your idea → working software",
         "",
-        "- host: GitHub Pages via Actions",
-        "- content: cv.json (JSON Resume)",
-        "- export: cv.pdf on every push",
-        "- /profile: one continuous 3D scene",
+        "- problem: who hurts, and how much",
+        "- outcome: what changes when it works",
+        "- scope: v1 in one loop",
+        "- constraints: budget · stack · deadline",
+        "- quality: tests · security · cost",
         "",
-        "@ acceptance: pdf ≤ 2 pages, lighthouse ≥ 90"
+        "@ acceptance: real users, real value"
       ],
       "tail": [
         "",
-        "✓ spec.md saved · handed to Planner"
+        "✓ spec.md committed · handed to Planner"
       ]
     },
     "specCard": {
       "title": "SPEC",
       "lines": [
-        "portfolio page",
-        "pdf export",
-        "json source"
+        "your idea",
+        "constraints",
+        "acceptance"
       ]
     },
     "diff": {
@@ -183,23 +159,23 @@
       "title": "design.md · C4 container view",
       "boxes": [
         {
-          "title": "cv.json",
+          "title": "spec.md",
           "sub": "single source",
           "tone": "amber"
         },
         {
-          "title": "Next.js site",
-          "sub": "three · gsap",
+          "title": "web app",
+          "sub": "unit α",
           "tone": "violet"
         },
         {
-          "title": "PDF job",
-          "sub": "playwright",
+          "title": "pdf export",
+          "sub": "unit β",
           "tone": "teal"
         },
         {
-          "title": "GitHub Actions",
-          "sub": "pages + release",
+          "title": "pipeline",
+          "sub": "deploy + release",
           "tone": "cyan"
         }
       ]
@@ -207,14 +183,13 @@
     "termA": {
       "title": "unit web · src/components/cv/scene/timeline.js",
       "body": [
-        "import gsap from \"gsap\"",
-        "import { ScrollTrigger } from \"gsap/ScrollTrigger\"",
+        "export function buildTimeline(S, { track }) {",
+        "  const tl = timeline({ scrub: 0.9, trigger: track })",
+        "  tl.to(S, { t: 5.9, duration: 5.9 }, 0)",
+        "  return tl",
+        "}",
         "",
-        "export const timeline = gsap.timeline({",
-        "  scrollTrigger: { scrub: 0.9, trigger }",
-        "})",
-        "",
-        "✓ 9 tests passed"
+        "✓ build ok · 9 tests passed"
       ]
     },
     "termB": {
@@ -226,68 +201,127 @@
         "await page.pdf({ path: \"out/cv.pdf\",",
         "  format: \"A4\", printBackground: true })",
         "",
-        "✓ 5 tests passed · 2 pages · 184 KB"
+        "✓ 5 tests passed · 2 pages · 42 KB"
+      ]
+    },
+    "terminal": {
+      "title": "me@desk · agent log",
+      "body": [
+        "$ loop run --spec spec.md",
+        "planner    · reading spec.md",
+        "planner    · 3 stories · 2 units · plan.md",
+        "architect  · drafting design.md",
+        "architect  · C4 container view done",
+        "builder α  · branch unit/web",
+        "builder α  · build ok · 9 tests ok",
+        "builder β  · branch unit/pdf",
+        "builder β  · pdf render ok · 5 tests ok",
+        "reviewer   · lint ok · unit 14/14 · e2e 3/3",
+        "reviewer   · PR #41 ready · waiting for human",
+        "ops        · deploy queued · behind the gate",
+        "$ git log --oneline -1",
+        "c802d7e feat(profile): idea in, software out",
+        "$ "
       ]
     },
     "crate": {
       "title": "cv.pdf",
       "sub": "v2.0.0 · A4 · 2p"
-    },
-    "terminal": {
-      "title": "me@desk · agent log",
-      "body": [
-        "$ aidlc run --spec spec.md",
-        "planner    · reading spec.md",
-        "planner    · 3 user stories · 2 units",
-        "architect  · drafting design.md",
-        "architect  · C4 container view done",
-        "builder α  · branch unit/web",
-        "builder α  · next build ok · 9 tests ok",
-        "builder β  · branch unit/pdf",
-        "builder β  · playwright pdf ok · 5 tests ok",
-        "reviewer   · lint ok · unit 14/14 · e2e 3/3",
-        "reviewer   · PR #41 ready · waiting for human",
-        "ops        · pages deploy queued",
-        "$ git log --oneline -1",
-        "c802d7e feat(profile): one architect, n agents",
-        "$ "
-      ]
     }
   },
   "sections": [
     {
-      "id": "experience",
+      "id": "loop",
       "num": "01",
+      "eyebrow": "How I work",
+      "title": "A loop, <em>not a line</em>."
+    },
+    {
+      "id": "experience",
+      "num": "02",
       "eyebrow": "Experience",
-      "title": "Business systems, <em>end to end</em>."
+      "title": "Ideas I've turned into <em>working software</em>."
     },
     {
       "id": "certifications",
-      "num": "02",
+      "num": "03",
       "eyebrow": "Certifications",
       "title": "Certified on <em>Azure</em>, fundamentals to architect."
     },
     {
       "id": "history",
-      "num": "03",
+      "num": "04",
       "eyebrow": "Work history · education",
       "title": "Where it <em>started</em>."
     },
     {
       "id": "skills",
-      "num": "04",
+      "num": "05",
       "eyebrow": "Skills · platforms",
       "title": "What I <em>build with</em>."
     },
     {
       "id": "contact",
-      "num": "05",
+      "num": "06",
       "eyebrow": "Contact · CV",
-      "title": "Let's build <em>real value</em>."
+      "title": "Have an idea? <em>Let's ship it.</em>"
     }
   ],
+  "loop": {
+    "lede": "The traditional lifecycle is a line — plan, design, build, test, deploy, maintain — and one slow loop back is a new release. I run it as a continuous loop. Code is no longer the bottleneck; the human-speed steps around it are. So agents do the hands-on work in hours, and I put my attention where judgement is needed: deciding, reviewing, approving.",
+    "stages": [
+      {
+        "name": "Plan",
+        "agents": "turn your idea into a written intent: problem, outcome, affected systems, constraints, acceptance criteria.",
+        "me": "Instigate — nothing enters the loop until I've written it down with you."
+      },
+      {
+        "name": "Design",
+        "agents": "draft the architecture, the diagrams and the risk list against the spec, with your standards applied up front.",
+        "me": "Direct — I make the trade-offs: stack, boundaries, security, cost."
+      },
+      {
+        "name": "Build",
+        "agents": "implement each unit in parallel, on its own branch, from a written plan I've approved.",
+        "me": "Direct — I keep the conventions the agents read every session, and I review the diffs."
+      },
+      {
+        "name": "Test",
+        "agents": "verify their own work before anyone sees it: builds pass, tests pass, screenshots match the design.",
+        "me": "Govern — I decide what green means; what reaches me has already passed the checks."
+      },
+      {
+        "name": "Deploy",
+        "agents": "run review passes against spec and policy, then ship through one pipeline.",
+        "me": "Govern — the agent that wrote the code can't approve it. I do, at the gate."
+      },
+      {
+        "name": "Maintain",
+        "agents": "watch production, diagnose what drifts and feed findings back in as new intent.",
+        "me": "Instigate — I triage, approve the fix, and the loop starts again."
+      }
+    ],
+    "roles": [
+      {
+        "name": "Instigate",
+        "text": "I start the work — the intent, the spec, the plan — so what enters the loop is what you actually need."
+      },
+      {
+        "name": "Direct",
+        "text": "I steer several agent sessions at once and judge the risk at every stage gate."
+      },
+      {
+        "name": "Govern",
+        "text": "I encode quality, security and cost as rules the agents can't skip, so they hold every session, every time."
+      }
+    ],
+    "outro": "↻ Maintain feeds Plan. The loop keeps running; my judgement stays above it. Solo, or leading a small team — whichever the problem needs."
+  },
+  "contact": {
+    "lede": "I help clients turn an idea into working software — solution architecture, cloud, delivery and AI integration — as a solo architect or leading a small team. Da Nang, Vietnam · remote or on site."
+  },
   "footer": {
-    "line": "This site and cv.pdf are built from one cv.json by GitHub Actions.",
+    "line": "This page and cv.pdf are built from one cv.json by one pipeline.",
     "repoLabel": "repo",
     "actionsLabel": "latest run",
     "backToBlog": "← Blog"

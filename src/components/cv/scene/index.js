@@ -67,7 +67,7 @@ export function createScene({ canvas, track, content, refs, hud, reduced, fonts,
   const up = new THREE.Vector3();
 
   const last = { board: -1, type: -1 };
-  let lastUi = { slide: -1, step: -1, gateOn: null, shipOn: null };
+  let lastUi = { slide: -1, gateOn: null, shipOn: null };
   let raf = 0;
   let running = false;
   let disposed = false;
@@ -77,20 +77,13 @@ export function createScene({ canvas, track, content, refs, hud, reduced, fonts,
   function updateHUD(t) {
     const next = {
       slide: slideFor(t),
-      step: Math.min(5, Math.floor(t + 0.5)),
       gateOn: t > 4.15 && t < 4.75,
       shipOn: t > 5.4,
     };
-    if (
-      next.slide !== lastUi.slide ||
-      next.step !== lastUi.step ||
-      next.gateOn !== lastUi.gateOn ||
-      next.shipOn !== lastUi.shipOn
-    ) {
+    if (next.slide !== lastUi.slide || next.gateOn !== lastUi.gateOn || next.shipOn !== lastUi.shipOn) {
       lastUi = next;
       onState(next);
     }
-    if (refs.railFill) refs.railFill.style.height = `${Math.min(100, (t / T_CAM) * 100)}%`;
     if (refs.hint) refs.hint.style.opacity = t < 0.15 ? '1' : '0';
   }
 
@@ -230,7 +223,7 @@ export function createScene({ canvas, track, content, refs, hud, reduced, fonts,
     renderer.toneMappingExposure = 0.75;
     agents.forEach((a) => a.g.position.copy(a.homeV));
     if (lastUi.slide !== 0) {
-      lastUi = { slide: 0, step: 0, gateOn: false, shipOn: false };
+      lastUi = { slide: 0, gateOn: false, shipOn: false };
       onState(lastUi);
     }
     renderer.render(scene, camera);

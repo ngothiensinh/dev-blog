@@ -6,6 +6,7 @@ import Certifications from '@/components/cv/sections/Certifications';
 import History from '@/components/cv/sections/History';
 import Skills from '@/components/cv/sections/Skills';
 import Contact from '@/components/cv/sections/Contact';
+import Loop from '@/components/cv/sections/Loop';
 
 const cv = getCv();
 const hud = getHud();
@@ -24,6 +25,9 @@ export default function ProfilePage() {
     <>
       <ProfileScene hud={hud} basics={cv.basics} meta={cv.meta} />
       <main id='content' className='sections'>
+        <Section {...sectionById('loop')}>
+          <Loop loop={hud.loop} />
+        </Section>
         <Section {...sectionById('experience')}>
           <Experience work={work} />
         </Section>
@@ -42,6 +46,7 @@ export default function ProfilePage() {
             meta={cv.meta}
             footer={hud.footer}
             download={hud.ship.download}
+            lede={hud.contact.lede}
           />
         </Section>
       </main>

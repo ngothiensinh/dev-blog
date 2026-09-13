@@ -1,13 +1,10 @@
 import Link from '@/components/Link';
 import { withBasePath } from '@/lib/cv';
 
-export default function Contact({ basics, meta, footer, download }) {
+export default function Contact({ basics, meta, footer, download, lede }) {
   return (
-    <>
-      <p className='contact-lede'>
-        {basics.location?.city}, {basics.location?.countryCode} · open to
-        architecture and senior engineering work, remote or on site.
-      </p>
+    <div className='contact'>
+      {lede && <p className='contact-lede'>{lede}</p>}
       <div className='contact-links'>
         <span>
           <span className='k'>email</span>
@@ -30,6 +27,6 @@ export default function Contact({ basics, meta, footer, download }) {
         <span>· v{meta.version}</span>
         <Link href='/'>{footer.backToBlog}</Link>
       </div>
-    </>
+    </div>
   );
 }

@@ -1,4 +1,5 @@
 import { formatRange } from '@/lib/cv';
+import ScrollTrack from '../ScrollTrack';
 
 // Education + internships, newest first, in the compact timeline treatment.
 export default function History({ education, internships }) {
@@ -22,9 +23,10 @@ export default function History({ education, internships }) {
   ].sort((a, b) => (a.start < b.start ? 1 : -1));
 
   return (
+    <ScrollTrack>
     <ol className='tl compact'>
       {items.map((it) => (
-        <li key={it.key} className='tl-item'>
+        <li key={it.key} className='tl-item' data-step>
           <div className='tl-meta'>{formatRange(it.start, it.end)}</div>
           <h3 className='tl-role'>{it.role}</h3>
           <div className='tl-org'>{it.meta}</div>
@@ -36,5 +38,6 @@ export default function History({ education, internships }) {
         </li>
       ))}
     </ol>
+    </ScrollTrack>
   );
 }

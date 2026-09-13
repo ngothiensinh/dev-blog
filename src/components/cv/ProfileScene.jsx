@@ -4,12 +4,12 @@ import { useEffect, useRef, useState } from 'react';
 import Hud from './Hud';
 import { withBasePath } from '@/lib/cv';
 
-const INITIAL_UI = { slide: 0, step: 0, gateOn: false, shipOn: false };
+const INITIAL_UI = { slide: 0, gateOn: false, shipOn: false };
 
 const sameUi = (a, b) =>
-  a.slide === b.slide && a.step === b.step && a.gateOn === b.gateOn && a.shipOn === b.shipOn;
+  a.slide === b.slide && a.gateOn === b.gateOn && a.shipOn === b.shipOn;
 
-// The hero HUD (slide 0, rail, corner) is in the static HTML; three + gsap load after hydration.
+// The hero HUD (slide 0, corner) is in the static HTML; three + gsap load after hydration.
 // `data-static` collapses the 450vh track when motion is reduced or WebGL is unavailable.
 export default function ProfileScene({ hud, basics, meta, contentId = 'content' }) {
   const canvasRef = useRef(null);
