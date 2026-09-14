@@ -1,0 +1,12 @@
+{
+  "name": "Software Engineer Learning Notes",
+  "short_name": "Sinh",
+  "start_url": "/dev-blog/",
+  "display": "standalone",
+  "background_color": "#0b0e14",
+  "theme_color": "#0b0e14",
+  "icons": [
+    { "src": "/dev-blog/icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/dev-blog/icons/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}

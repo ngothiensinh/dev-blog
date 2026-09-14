@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "cv:pdf": "node scripts/render-cv.mjs"
+    "cv:pdf": "node scripts/render-cv.mjs",
+    "icons": "node scripts/make-icons.mjs"
   },
   "dependencies": {
     "@mdx-js/loader": "^3.0.0",

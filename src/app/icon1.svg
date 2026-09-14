@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="112" fill="#0b0e14"/>
+  <!-- the loop: plan → design → build → test → deploy → maintain, open at the top -->
+  <path d="M 186 179 A 140 140 0 1 0 326 179" fill="none" stroke="#6fd3ff" stroke-width="40" stroke-linecap="round"/>
+  <!-- the human above the loop -->
+  <circle cx="256" cy="138" r="62" fill="#ff9f5a"/>
+</svg>
