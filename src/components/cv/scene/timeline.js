@@ -32,7 +32,7 @@ export const NOTE_TIMING = {
   arch: { off: [40, -80], from: 2.2, to: 3.0 },
   b1: { off: [-220, 40], from: 3.0, to: 3.85 },
   b2: { off: [30, -70], from: 3.0, to: 3.85 },
-  rev: { off: [30, -70], from: 3.6, to: 4.8 },
+  rev: { off: [30, -70], from: 3.6, to: 4.1 },
   me: { off: [-230, -50], from: 4.05, to: 4.85 },
   ops: { off: [-200, -70], from: 5.15, to: 6 },
   crate: { off: [40, -50], from: 5.45, to: 6 },
@@ -81,3 +81,4 @@ export function buildTimeline(S, { track, content }) {
     },
   };
 }
+

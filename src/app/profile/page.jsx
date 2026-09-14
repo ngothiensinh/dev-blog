@@ -6,7 +6,7 @@ import Certifications from '@/components/cv/sections/Certifications';
 import History from '@/components/cv/sections/History';
 import Skills from '@/components/cv/sections/Skills';
 import Contact from '@/components/cv/sections/Contact';
-import Loop from '@/components/cv/sections/Loop';
+import Summary from '@/components/cv/sections/Summary';
 
 const cv = getCv();
 const hud = getHud();
@@ -25,8 +25,8 @@ export default function ProfilePage() {
     <>
       <ProfileScene hud={hud} basics={cv.basics} meta={cv.meta} />
       <main id='content' className='sections'>
-        <Section {...sectionById('loop')}>
-          <Loop loop={hud.loop} />
+        <Section {...sectionById('summary')}>
+          <Summary text={hud.summary.body} />
         </Section>
         <Section {...sectionById('experience')}>
           <Experience work={work} />

@@ -10,78 +10,84 @@
       "body": "I run delivery as a loop — plan, design, build, test, deploy, maintain — with AI agents doing the hands-on work and me above the loop: instigating, directing, governing. Scroll to watch one idea go round."
     },
     {
-      "eyebrow": "01 · plan → design → build → test",
+      "eyebrow": "01 plan → 02 design → 03 build → 04 test",
       "title": "Agents do the hands-on work. <em>I direct it.</em>",
-      "body": "Your idea becomes a written spec. Agents plan it, draw the architecture, build the units in parallel and verify their own work — every step checked before it reaches me."
+      "body": "Your idea becomes a written intent — nothing enters the loop until it’s written down with you. Agents plan it, draft the architecture, build the units in parallel and verify their own work. I make the trade-offs: stack, boundaries, security, cost."
     },
     {
-      "eyebrow": "02 · the human gate",
+      "eyebrow": "05 deploy · the human gate",
       "title": "Nothing ships <em>without me.</em>",
-      "body": "The agent that wrote the code can't approve it. Every change comes back to my desk: I approve, reject or steer — quality, security and cost stay my call."
+      "body": "The agent that wrote the code can’t approve it. Every change comes back to my desk: I approve, reject or steer — I decide what green means, and quality, security and cost stay my call."
     },
     {
-      "eyebrow": "03 · deploy → maintain",
+      "eyebrow": "05 deploy → 06 maintain ↻ plan",
       "title": "Shipped. <em>And kept running.</em>",
-      "body": "One pipeline ships the product with its documents — this page and my CV included. After launch the loop keeps turning: monitor, fix, next idea."
+      "body": "One pipeline ships the product with its documents — this page and my CV included. Then agents watch production and feed what drifts back as new intent; I triage, approve the fix, and the loop turns again."
     }
   ],
   "notes": [
     {
       "id": "spec",
       "tone": "warm",
-      "label": "spec.md",
+      "label": "spec.md · 01 plan",
       "text": "your idea, written down · scope · acceptance",
-      "sub": "author: me, with you",
-      "short": "spec.md · your idea"
+      "sub": "me · instigate — written down with you first",
+      "short": "01 plan · spec.md"
     },
     {
       "id": "planner",
       "tone": "cyan",
-      "label": "Planner",
-      "text": "plan · stories · units · plan.md",
-      "short": "plan"
+      "label": "Planner · 01 plan",
+      "text": "intent → stories · units · plan.md",
+      "sub": "me · direct — I approve the plan",
+      "short": "01 plan"
     },
     {
       "id": "arch",
       "tone": "violet",
-      "label": "Architect",
-      "text": "design · C4 · risks · trade-offs",
-      "short": "design"
+      "label": "Architect · 02 design",
+      "text": "C4 · risks · trade-offs, against the spec",
+      "sub": "me · direct — stack, boundaries, security, cost",
+      "short": "02 design"
     },
     {
       "id": "b1",
       "tone": "teal",
-      "label": "Builder α",
-      "text": "build · unit: web · own branch",
-      "short": "build · web"
+      "label": "Builder α · 03 build",
+      "text": "unit: web · own branch · approved plan",
+      "sub": "me · direct — conventions, then I review the diff",
+      "short": "03 build · web"
     },
     {
       "id": "b2",
       "tone": "teal",
-      "label": "Builder β",
-      "text": "build · unit: pdf · own branch",
-      "short": "build · pdf"
+      "label": "Builder β · 03 build",
+      "text": "unit: pdf · own branch · approved plan",
+      "short": "03 build · pdf"
     },
     {
       "id": "rev",
       "tone": "cyan",
-      "label": "Reviewer",
-      "text": "test · lint · 14/14 green · diff ready",
-      "short": "test · 14/14"
+      "label": "Reviewer · 04 test",
+      "text": "build · tests 14/14 · screens vs design",
+      "sub": "me · govern — I decide what green means",
+      "short": "04 test · 14/14"
     },
     {
       "id": "me",
       "tone": "warm",
-      "label": "Human gate",
+      "label": "Human gate · 05 deploy",
       "text": "approve · reject · steer",
-      "short": "human gate"
+      "sub": "me · govern — only I can approve it",
+      "short": "05 gate"
     },
     {
       "id": "ops",
       "tone": "cyan",
-      "label": "Ops",
-      "text": "deploy · one pipeline · monitor",
-      "short": "deploy"
+      "label": "Ops · 05 deploy → 06 maintain",
+      "text": "one pipeline · monitor · drift → new intent",
+      "sub": "me · instigate — triage, approve the fix, loop again",
+      "short": "06 maintain"
     },
     {
       "id": "crate",
@@ -231,10 +237,10 @@
   },
   "sections": [
     {
-      "id": "loop",
+      "id": "summary",
       "num": "01",
-      "eyebrow": "How I work",
-      "title": "A loop, <em>not a line</em>."
+      "eyebrow": "Summary",
+      "title": "<em>Who</em> you’d be working with."
     },
     {
       "id": "experience",
@@ -267,56 +273,6 @@
       "title": "Have an idea? <em>Let's ship it.</em>"
     }
   ],
-  "loop": {
-    "lede": "The traditional lifecycle is a line — plan, design, build, test, deploy, maintain — and one slow loop back is a new release. I run it as a continuous loop. Code is no longer the bottleneck; the human-speed steps around it are. So agents do the hands-on work in hours, and I put my attention where judgement is needed: deciding, reviewing, approving.",
-    "stages": [
-      {
-        "name": "Plan",
-        "agents": "turn your idea into a written intent: problem, outcome, affected systems, constraints, acceptance criteria.",
-        "me": "Instigate — nothing enters the loop until I've written it down with you."
-      },
-      {
-        "name": "Design",
-        "agents": "draft the architecture, the diagrams and the risk list against the spec, with your standards applied up front.",
-        "me": "Direct — I make the trade-offs: stack, boundaries, security, cost."
-      },
-      {
-        "name": "Build",
-        "agents": "implement each unit in parallel, on its own branch, from a written plan I've approved.",
-        "me": "Direct — I keep the conventions the agents read every session, and I review the diffs."
-      },
-      {
-        "name": "Test",
-        "agents": "verify their own work before anyone sees it: builds pass, tests pass, screenshots match the design.",
-        "me": "Govern — I decide what green means; what reaches me has already passed the checks."
-      },
-      {
-        "name": "Deploy",
-        "agents": "run review passes against spec and policy, then ship through one pipeline.",
-        "me": "Govern — the agent that wrote the code can't approve it. I do, at the gate."
-      },
-      {
-        "name": "Maintain",
-        "agents": "watch production, diagnose what drifts and feed findings back in as new intent.",
-        "me": "Instigate — I triage, approve the fix, and the loop starts again."
-      }
-    ],
-    "roles": [
-      {
-        "name": "Instigate",
-        "text": "I start the work — the intent, the spec, the plan — so what enters the loop is what you actually need."
-      },
-      {
-        "name": "Direct",
-        "text": "I steer several agent sessions at once and judge the risk at every stage gate."
-      },
-      {
-        "name": "Govern",
-        "text": "I encode quality, security and cost as rules the agents can't skip, so they hold every session, every time."
-      }
-    ],
-    "outro": "↻ Maintain feeds Plan. The loop keeps running; my judgement stays above it. Solo, or leading a small team — whichever the problem needs."
-  },
   "contact": {
     "lede": "I help clients turn an idea into working software — solution architecture, cloud, delivery and AI integration — as a solo architect or leading a small team. Da Nang, Vietnam · remote or on site."
   },
@@ -325,5 +281,8 @@
     "repoLabel": "repo",
     "actionsLabel": "latest run",
     "backToBlog": "← Blog"
+  },
+  "summary": {
+    "body": "Software architect, seven years in. I’ve designed and shipped business software across shipping and logistics, eKYC, mobile payments and industrial monitoring — mostly on Azure with .NET and NestJS, DDD and microservices — and I bring AI into real products, from architecture to deployment. I run delivery as a loop: AI agents do the hands-on work, <em>my judgement stays above it</em>. Solo, or leading a small team."
   }
 }
